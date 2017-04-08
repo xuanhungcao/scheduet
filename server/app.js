@@ -1,43 +1,41 @@
-/**
- * Main application file
- */
+const express        = require('express')
+const app            = express()
+const port           = process.env.PORT || 3000
+const mongoose       = require('mongoose')
+const session        = require('express-session')
+const bodyParser     = require('body-parser')
+const cookieParser   = require('cookie-parser')
+const cors           = require('cors')
+const passport       = require('passport')
+const configDB       = require('./app/config/database')
+const configMain     = require('./app/config/main')
+const morgan         = require('morgan')
 
-'use strict';
+if (configMain.test == 'local')
+    mongoose.connect(configDB.localAddress)
+else
+    mongoose.connect(configDB.serverAddress)
+app.set('view engine', 'ejs')
 
-import express from 'express';
-import mongoose from 'mongoose';
-mongoose.Promise = require('bluebird');
-import config from './config/environment';
-import http from 'http';
-import seedDatabaseIfNeeded from './config/seed';
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+app.use(session({
+    secret : configMain.secret,
+    resave : true,
+    proxy  : true,
+    saveUninitialized: true,
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(morgan('dev'))
+app.use('assets', express.static(__dirname + '/public'))
+app.use(cors({ origin: '*' }))
 
-// Connect to MongoDB
-mongoose.connect(config.mongo.uri, config.mongo.options);
-mongoose.connection.on('error', function(err) {
-  console.error(`MongoDB connection error: ${err}`);
-  process.exit(-1); // eslint-disable-line no-process-exit
-});
+require('./app/router')(app, passport)
+require('./app/config/passport')(app)
 
-// Setup server
-var app = express();
-var server = http.createServer(app);
-var socketio = require('socket.io')(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
-});
-require('./config/socketio').default(socketio);
-require('./config/express').default(app);
-require('./routes').default(app);
+app.listen(port)
 
-// Start server
-function startServer() {
-  app.angularFullstack = server.listen(config.port, config.ip, function() {
-    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-  });
-}
 
-seedDatabaseIfNeeded();
-setImmediate(startServer);
 
-// Expose app
-exports = module.exports = app;
