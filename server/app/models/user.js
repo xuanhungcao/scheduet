@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt   = require('bcrypt-nodejs');
+const mongoose = require('mongoose')
+const bcrypt   = require('bcrypt-nodejs')
 
 const userSchema = mongoose.Schema({
   username: String,
@@ -8,12 +8,18 @@ const userSchema = mongoose.Schema({
   info    : mongoose.Schema.Types.Mixed,
 });
 
-userSchema.methods.validPassword = (password) => {
-    return bcrypt.compareSync(this.password, password)
+userSchema.methods.validPassword = (self, password) => {
+    try {
+        var res = bcrypt.compareSync(password, self.password)
+    } catch(e) {
+        console.log(e.red)
+        return
+    }
+    return res
 }
 
 userSchema.methods.encrypt = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync())
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 }
 
 module.exports = mongoose.model('users', userSchema);

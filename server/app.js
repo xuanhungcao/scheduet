@@ -11,6 +11,8 @@ const configDB       = require('./app/config/database')
 const configMain     = require('./app/config/main')
 const morgan         = require('morgan')
 
+mongoose.Promise = require('bluebird')
+
 if (configMain.test == 'local')
     mongoose.connect(configDB.localAddress)
 else

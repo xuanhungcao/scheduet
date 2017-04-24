@@ -10,7 +10,18 @@ function generateToken(user) {
     })
 }
 
+//check username validation, avoid sql injection
+function isValidUser(username) {
+    return true
+}
+
 exports.register = function(req, res) {
+    let username = req.body.username
+    if (!isValidUser(username)) {
+        res.status(422).send({error: 'error'})
+        return
+    }
+
     User.findOne({username: req.body.username}, (err, user) => {
         if (err) throw err
 
@@ -39,9 +50,10 @@ exports.register = function(req, res) {
 
 exports.login = function(req, res) {
     const userInfo = getUserInfo(req)
+    console.log(userInfo.yellow)
 
-    res.send({
-        token: `JWT ${generateToken(userInfo)}`,
+    res.status(200).send({
+        token: generateToken(userInfo),
         user: userInfo,
     })
 }
