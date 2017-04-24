@@ -14,3 +14,5 @@ build/Release
 logs
 *.log
 npm-debug.log*
+
+#nothing
