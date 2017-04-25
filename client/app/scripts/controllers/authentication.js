@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:LoginCtrl
+ * @name app.navbar.controller:AuthenticationCtrl
  * @description
- * # LoginCtrl
+ * # AuthenticationCtrl
  * Controller of the app.navbar
  */
 angular.module('app.navbar')
-  .controller('LoginCtrl', function ($scope, $http, $uibModalInstance, $uibModal, config, $window) {
+  .controller('AuthenticationCtrl', function ($scope, $http, $uibModalInstance, $uibModal, config, $window) {
     $scope.loginData = {
       username: "",
       password: ""

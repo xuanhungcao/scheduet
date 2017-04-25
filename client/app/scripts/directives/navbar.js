@@ -12,10 +12,18 @@ angular.module('app.navbar', [])
     return {
       templateUrl: 'views/navbar.html',
       restrict: 'E',
-      controller: function($scope, $uibModal, $window) {
+      controller: function($scope, $uibModal, $window, userService) {
+        //Get current user
+        if (localStorage.getItem('scheduetToken') != null) {
+          userService.getUser().then(data => {
+            $scope.user = data;
+            console.log($scope.user);
+          });
+        }
+
         $scope.openLogin = () => {
           $uibModal.open({
-            controller: 'LoginCtrl as LoginCtrl',
+            controller: 'AuthenticationCtrl as AuthenticationCtrl',
             templateUrl: 'views/login.html'
           });
         };
