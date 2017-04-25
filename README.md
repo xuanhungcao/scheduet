@@ -25,3 +25,5 @@ Second, config `app/config/main.js` to `test : 'local'` or `test : 'server'`
 
 Run
 `node app.js`
+
+## Testcases and auto build scripts will be available soon
