@@ -10,6 +10,7 @@ const mongoose = require('mongoose')
  * @apiDescription fetch users, ROLE required
  * @apiExample Example
  *    localhost:3000/api/14020791
+ *    http://54.169.225.125:3000/api/14020791
  * @apiHeader (Authorization) {String} Authorization JWT  + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -66,6 +67,7 @@ exports.getProfile = function (req, res) {
  * @apiDescription get personal schedule
  * @apiExample Example
  *    localhost:3000/api/schedule
+ *    http://54.169.225.125:3000/api/schedule
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -142,6 +144,7 @@ exports.getSchedule = function (req, res) {
  * @apiDescription get notes
  * @apiExample Example
  *    localhost:3000/api/note
+ *    http://54.169.225.125:3000/api/note
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -191,6 +194,7 @@ exports.getNote = function (req, res) {
  * @apiDescription add a note
  * @apiExample Example
  *    localhost:3000/api/note
+ *    http://54.169.225.125:3000/api/note
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -245,6 +249,7 @@ exports.newNote = function (req, res) {
  * @apiDescription modify an existing note
  * @apiExample Example
  *    localhost:3000/api/note
+ *    http://54.169.225.125:3000/api/note
  * @apiHeader (Authorization) {String} JAuthorization WT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -308,6 +313,7 @@ exports.modifyNote = function(req, res) {
  * @apiDescription delete an existing note
  * @apiExample Example
  *    localhost:3000/api/note/58feaf6ab8884123142e8bb1
+ *    http://54.169.225.125:3000/api/note/58feaf6ab8884123142e8bb1
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {

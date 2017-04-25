@@ -1,4 +1,4 @@
 module.exports = {
-    test   : 'local',
+    test   : 'server',
     secret : 'youcompleteme',
 }

@@ -8,10 +8,13 @@ const authController = require('./controllers/authentication');
 const requireLogin  = passport.authenticate('local', {session : false})
 const requireAuth   = passport.authenticate('jwt', {session: false})
 
+const path = require('path')
+
 module.exports = function(app, passport) {
     const apiRoutes = express.Router()
 
     app.get('/', (req, res) => res.json({status : 200}) )
+    app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, '../docs/index.html')))
     app.post('/register', authController.register)
     app.post('/login', requireLogin, authController.login)
 

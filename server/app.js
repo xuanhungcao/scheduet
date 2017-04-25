@@ -18,6 +18,7 @@ if (configMain.test == 'local')
 else
     mongoose.connect(configDB.serverAddress)
 app.set('view engine', 'ejs')
+app.use(express.static(__dirname + '/docs'))
 
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}))
