@@ -5,12 +5,12 @@ const Note = require('../models/note')
 const mongoose = require('mongoose')
 
 /**
- * @api {GET} /api/users/:username get users
+ * @api {GET} /api/users/:username get user
  * @apiGroup User
- * @apiDescription fetch users, ROLE required
+ * @apiDescription fetch user's profile
  * @apiExample Example
- *    localhost:3000/api/14020791
- *    http://54.169.225.125:3000/api/14020791
+ *    localhost:3000/api/users/14020791
+ *    http://54.169.225.125:3000/api/users/14020791
  * @apiHeader (Authorization) {String} Authorization JWT  + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -37,8 +37,52 @@ exports.getProfile = function (req, res) {
     res.status(400).send('bad request, username must be numeric')
     return
   }
+  if (req.user.username != req.params.username) {
+    res.status(403).send('forbidden, cannot get this user')
+    return
+  }
+
   console.log(`@ GET profile `.yellow + req.params.username.blue)
 
+  User.findOne({username: req.params.username}, (err, user) => {
+    if (err) {
+      res.status(204).send('oops something wrong')
+      return
+    }
+    if (!user) {
+      res.status(404).send('not found')
+      return
+    }
+
+    res.status(200).send(user)
+  })
+}
+
+/**
+ * @api {GET} /api/users get users
+ * @apiGroup User
+ * @apiDescription fetch all users, ROLE Admin required
+ * @apiExample Example
+ *    localhost:3000/api/users
+ *    http://54.169.225.125:3000/api/users
+ * @apiHeader (Authorization) {String} Authorization JWT  + token
+ * @apiHeaderExample {json} Header example:
+ *    {
+ *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
+ *    }
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *      {
+ *        "_id":"58fb715925678e616f584e65",
+ *        "role":"Admin",
+ *        "password":"$2a$10$aWKevQChzMRW7f66FYSwauTXqGOo3iKywbhVm9X1f15Qe4XgPj1ia",
+ *        "username":"14020791",
+ *        "__v":0
+ *      }
+ *     ]
+ */
+exports.getUsers = function (req, res) {
   User.findOne({username: req.user.username}, (err, user) => {
     if (err) {
       res.status(204).send('oops something wrong')
@@ -51,13 +95,14 @@ exports.getProfile = function (req, res) {
     if (user.role == ROLE.ADMIN) {
       User.find({}, (err, users) => {
         if (err) {
-          res.status(204).send('oops can not fetch all users')
+          res.status(204).send('oops can not fetch all users');
           return
         }
         res.status(200).send(users)
       })
+    } else {
+      res.status(403).send('forbidden, cannot fetch all users');
     }
-    else res.status(200).send(user)
   })
 }
 

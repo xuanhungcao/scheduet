@@ -21,6 +21,7 @@ module.exports = function(app, passport) {
     app.use('/api', apiRoutes)
 
     apiRoutes.get('/users/:username', requireAuth, apiController.getProfile)
+    apiRoutes.get('/users', requireAuth, apiController.getUsers)
     apiRoutes.get('/schedules', requireAuth, apiController.getSchedule)
     apiRoutes.get('/notes', requireAuth, apiController.getNote)
 
