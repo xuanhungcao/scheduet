@@ -9,6 +9,11 @@
  * Main module of the application.
  */
  
+/* 
+	Each dependency module represents a component of the app
+	A module use a directive with template (view) and controller (controller)
+*/
+
 angular
   .module('clientApp', 
   	['app.navbar', 
