@@ -5,15 +5,17 @@ const Note = require('../models/note')
 const mongoose = require('mongoose')
 
 /**
- * @api {GET} /api/users/:username
+ * @api {GET} /api/users/:username get users
+ * @apiGroup User
  * @apiDescription fetch users, ROLE required
- * @apiExample localhost:3000/api/14020791
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/14020791
+ * @apiHeader (Authorization) {String} Authorization JWT  + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username
+ * @apiParam {Number} username username
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -59,15 +61,17 @@ exports.getProfile = function (req, res) {
 }
 
 /**
- * @api {GET} /api/schedules
+ * @api {GET} /api/schedules get schedules
+ * @apiGroup Schedule
  * @apiDescription get personal schedule
- * @apiExample localhost:3000/api/schedule
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/schedule
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username[Admin only, OPTIONAL]
+ * @apiParam {Number} [username] Admin permission
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     [{
@@ -133,15 +137,17 @@ exports.getSchedule = function (req, res) {
 }
 
 /**
- * @api {GET} /api/notes
- * @apiDescription get personal notes
- * @apiExample localhost:3000/api/note
- * @apiHeader (Authorization) {String} JWT + token
+ * @api {GET} /api/notes get notes
+ * @apiGroup Note
+ * @apiDescription get notes
+ * @apiExample Example
+ *    localhost:3000/api/note
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username[Admin only, OPTIONAL]
+ * @apiParam {Number} [username=none] Admin permission
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     [ {"_id":"58fea1fa7f255612309b6872","type":"ugent","priority":3,"end":1,"begin":2,"description":"buy milk if they have eggs, bring 6","owner":"14020791","__v":0},
@@ -180,24 +186,26 @@ exports.getNote = function (req, res) {
 }
 
 /**
- * @api {POST} /api/notes
+ * @api {POST} /api/notes create note
+ * @apiGroup Note
  * @apiDescription add a note
- * @apiExample localhost:3000/api/note
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/note
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username required
- * @apiParam {String} [description] description [OPTIONAL, default empty]
- * @apiParam {Number} [begin] start [OPTIONAL, default 0]
- * @apiParam {Number} [end] deadline [OPTIONAL, default 0]
- * @apiParam {Number} [priority] priority [OPTIONAL, default 0]
- * @apiParam {String} [type] type [OPTIONAL, default basic]
- * @apiParam {json} [other [OPTIONAL]
+ * @apiParam {Number} username username
+ * @apiParam {String} [description=empty] description
+ * @apiParam {Number} [begin=0] start
+ * @apiParam {Number} [end=0] deadline
+ * @apiParam {Number} [priority=0] priority [OPTIONAL, default 0]
+ * @apiParam {String} [type=empty] type
+ * @apiParam {json} [other={}] other information
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     {"noteID":"58feaf6ab8884123142e8bb1"}
+ *     {"noteId":"58feaf6ab8884123142e8bb1"}
  */
 
 exports.newNote = function (req, res) {
@@ -225,22 +233,24 @@ exports.newNote = function (req, res) {
         return
       }
       res.status(200).send({
-        noteID: n._id
+        noteId: n._id
       })
     })
   })
 }
 
 /**
- * @api {PUT} /api/notes
+ * @api {PUT} /api/notes modify note
+ * @apiGroup Note
  * @apiDescription modify an existing note
- * @apiExample localhost:3000/api/note
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/note
+ * @apiHeader (Authorization) {String} JAuthorization WT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {id} [ObjectId] objectId required
+ * @apiParam {id} ObjectId objectId required
  * @apiParam {String} [description] description [OPTIONAL, default empty]
  * @apiParam {Number} [begin] start [OPTIONAL, default 0]
  * @apiParam {Number} [end] deadline [OPTIONAL, default 0]
@@ -293,15 +303,17 @@ exports.modifyNote = function(req, res) {
 }
 
 /**
- * @api {DELETE} /api/notes/:noteId
+ * @api {DELETE} /api/notes/:noteId delete note
+ * @apiGroup Note
  * @apiDescription delete an existing note
- * @apiExample localhost:3000/api/note/58feaf6ab8884123142e8bb1
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/note/58feaf6ab8884123142e8bb1
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {id} [ObjectId] objectId required
+ * @apiParam {id} ObjectId objectId required
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
