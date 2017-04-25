@@ -17,11 +17,11 @@ module.exports = function(app, passport) {
 
     app.use('/api', apiRoutes)
 
-    apiRoutes.get('/:username', requireAuth, apiController.getProfile)
-    apiRoutes.get('/schedule', requireAuth, apiController.getSchedule)
-    apiRoutes.get('/note', requireAuth, apiController.getNote)
+    apiRoutes.get('/users/:username', requireAuth, apiController.getProfile)
+    apiRoutes.get('/schedules', requireAuth, apiController.getSchedule)
+    apiRoutes.get('/notes', requireAuth, apiController.getNote)
 
-    apiRoutes.post('/note/:noteID', requireAuth, apiController.newNote)
-    //apiRoutes.put('/:noteID', requireAuth, apiController.modifyNote)
-    //apiRoutes.delete('/:noteID', requireAuth, apiController.deleteNote)
+    apiRoutes.post('/notes', requireAuth, apiController.newNote)
+    apiRoutes.put('/notes', requireAuth, apiController.modifyNote)
+    apiRoutes.delete('/notes/:noteId', requireAuth, apiController.deleteNote)
 }
