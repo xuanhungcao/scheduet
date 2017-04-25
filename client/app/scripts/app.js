@@ -8,5 +8,14 @@
  *
  * Main module of the application.
  */
+ 
 angular
-  .module('clientApp', []);
+  .module('clientApp', 
+  	['app.navbar', 
+  	'app.footer',
+  	'app.calendar',
+  	'ui.router'])
+  .config(function($locationProvider, $urlRouterProvider) {
+	$locationProvider.html5Mode(true);
+	$urlRouterProvider.otherwise('/');
+});

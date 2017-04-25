@@ -31,5 +31,8 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "angular-ui-router": "^0.4.2"
   }
 }
