@@ -1,5 +1,107 @@
 define({ "api": [
   {
+    "type": "POST",
+    "url": "/login",
+    "title": "login",
+    "group": "Authentication",
+    "description": "<p>login</p>",
+    "examples": [
+      {
+        "title": "Example",
+        "content": "localhost:3000/login\nhttp://54.169.225.125:3000/login",
+        "type": "json"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "username",
+            "description": "<p>username required</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>password required</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    {\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVChmEL_WRt-0P_weF8r41m0eEbryPQ-smyRi2iuMCJoCA\",\"user\":{\"username\":\"14020800\",\"role\":\"Member\"}}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/authentication.js",
+    "groupTitle": "Authentication",
+    "name": "PostLogin"
+  },
+  {
+    "type": "POST",
+    "url": "/register",
+    "title": "register",
+    "group": "Authentication",
+    "description": "<p>register new user</p>",
+    "examples": [
+      {
+        "title": "Example",
+        "content": "localhost:3000/register\nhttp://54.169.225.125:3000/register",
+        "type": "json"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "username",
+            "description": "<p>username required</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>password required</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "role",
+            "defaultValue": "Member",
+            "description": "<p>Admin/Member</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  {\"token\":\"JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZDybQ\"}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/authentication.js",
+    "groupTitle": "Authentication",
+    "name": "PostRegister"
+  },
+  {
     "type": "DELETE",
     "url": "/api/notes/:noteId",
     "title": "delete note",
@@ -8,7 +110,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example",
-        "content": "localhost:3000/api/note/58feaf6ab8884123142e8bb1",
+        "content": "localhost:3000/api/note/58feaf6ab8884123142e8bb1\nhttp://54.169.225.125:3000/api/note/58feaf6ab8884123142e8bb1",
         "type": "json"
       }
     ],
@@ -68,7 +170,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example",
-        "content": "localhost:3000/api/note",
+        "content": "localhost:3000/api/note\nhttp://54.169.225.125:3000/api/note",
         "type": "json"
       }
     ],
@@ -129,7 +231,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example",
-        "content": "localhost:3000/api/note",
+        "content": "localhost:3000/api/note\nhttp://54.169.225.125:3000/api/note",
         "type": "json"
       }
     ],
@@ -237,7 +339,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example",
-        "content": "localhost:3000/api/note",
+        "content": "localhost:3000/api/note\nhttp://54.169.225.125:3000/api/note",
         "type": "json"
       }
     ],
@@ -339,7 +441,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example",
-        "content": "localhost:3000/api/schedule",
+        "content": "localhost:3000/api/schedule\nhttp://54.169.225.125:3000/api/schedule",
         "type": "json"
       }
     ],
@@ -399,7 +501,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example",
-        "content": "localhost:3000/api/14020791",
+        "content": "localhost:3000/api/14020791\nhttp://54.169.225.125:3000/api/14020791",
         "type": "json"
       }
     ],
