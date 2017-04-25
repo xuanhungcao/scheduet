@@ -8,19 +8,38 @@
  *
  * Main module of the application.
  */
- 
+
 /* 
-	Each dependency module represents a component of the app
-	A module use a directive with template (view) and controller (controller)
-*/
+ Each dependency module represents a component of the app
+ A module use a directive with template (view) and controller (controller)
+ */
 
 angular
-  .module('clientApp', 
-  	['app.navbar', 
-  	'app.footer',
-  	'app.calendar',
-  	'ui.router'])
-  .config(function($locationProvider, $urlRouterProvider) {
-	$locationProvider.html5Mode(true);
-	$urlRouterProvider.otherwise('/');
-});
+	.module('clientApp',
+		['app.navbar',
+			'app.footer',
+			'app.calendar',
+			'angular-jwt',
+			'ui.router',
+			'ui.bootstrap'])
+	.constant('config', {
+		serverUrl: 'http://localhost:3000'
+	})
+	.config(function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider, jwtOptionsProvider) {
+		$locationProvider.html5Mode(true);
+		$urlRouterProvider.otherwise('/');
+		jwtOptionsProvider.config({
+			authPrefix: 'JWT ',
+			tokenGetter: function() {
+				return localStorage.getItem('scheduetToken');
+			},
+			whiteListedDomains: ['localhost'],
+			unauthenticatedRedirectPath: '/'
+		});
+
+		$httpProvider.interceptors.push('jwtInterceptor');
+	})
+	.run(function(authManager) {
+		authManager.checkAuthOnRefresh();
+		authManager.redirectWhenUnauthenticated();
+	});

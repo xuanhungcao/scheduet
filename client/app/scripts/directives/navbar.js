@@ -12,8 +12,10 @@ angular.module('app.navbar', [])
     return {
       templateUrl: '../views/navbar.html',
       restrict: 'E',
-      controller: function() {
+      controller: function($scope, $uibModal) {
+        $scope.openLogin = () => {
 
+        }
       }
     };
   });
