@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.17.5",
+    "axios": "^0.16.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
+    "cheerio": "^0.22.0",
     "colors": "^1.1.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.3",
@@ -25,6 +28,11 @@
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
-    "password-hash": "^1.2.2"
+    "password-hash": "^1.2.2",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.0"
+  },
+  "devDependencies": {
+    "csv": "^1.1.1"
   }
 }

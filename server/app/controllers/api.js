@@ -1,17 +1,21 @@
 const ROLE = require('../config/role')
 const User = require('../models/user')
 const Schedule = require('../models/schedule')
+const Note = require('../models/note')
+const mongoose = require('mongoose')
 
 /**
- * @api {GET} /api/:username
+ * @api {GET} /api/users/:username get users
+ * @apiGroup User
  * @apiDescription fetch users, ROLE required
- * @apiExample localhost:3000/api/14020791
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/14020791
+ * @apiHeader (Authorization) {String} Authorization JWT  + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username
+ * @apiParam {Number} username username
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -24,30 +28,27 @@ const Schedule = require('../models/schedule')
  */
 
 exports.getProfile = function (req, res) {
-  /** @Author: DONG Mar 24 2017
-   *   @Description: check valid request
-   */
-  if (!req.param.username) {
+  if (!req.params.username) {
     res.status(400).send('bad request, missing username field')
     return
   }
-  if (Number.isInteger(Number(req.param.username))) {
+  if (!Number.isInteger(Number(req.params.username))) {
     res.status(400).send('bad request, username must be numeric')
     return
   }
+  console.log(`@ GET profile `.yellow + req.params.username.blue)
 
-  /** @Author: DONG Mar 24 2017
-   *  @Description: Fetch users
-   */
-  console.log(`@ GET profile `.yellow + username.blue)
-
-  User.findOne({username: req.param.username}, (err, user) => {
+  User.findOne({username: req.user.username}, (err, user) => {
     if (err) {
       res.status(204).send('oops something wrong')
       return
     }
+    if (!user) {
+      res.status(404).send('not found')
+      return
+    }
     if (user.role == ROLE.ADMIN) {
-      user.find({}, (err, users) => {
+      User.find({}, (err, users) => {
         if (err) {
           res.status(204).send('oops can not fetch all users')
           return
@@ -55,25 +56,58 @@ exports.getProfile = function (req, res) {
         res.status(200).send(users)
       })
     }
+    else res.status(200).send(user)
   })
 }
 
 /**
- * @api {GET} /api/schedule
+ * @api {GET} /api/schedules get schedules
+ * @apiGroup Schedule
  * @apiDescription get personal schedule
- * @apiExample localhost:3000/api/schedule
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/schedule
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username[Admin only, OPTIONAL]
+ * @apiParam {Number} [username] Admin permission
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     [schedule1, schedule2]
+ *     [{
+ *       "_id":"58fe3349c162224e9707865c",
+ *       "info":{
+ *          "Ghi chú":"ĐK lần đầu",
+ *          "Họ và tên":"Nguyễn Trọng Đông",
+ *          "Lớp khoá học":"QH-2014-I/CQ-C-A",
+ *          "Mã LMH":"PES1030 8",
+ *          "Mã SV":"14020791",
+ *          "Ngày sinh":"13/8/1996",
+ *          "Nhóm":"CL",
+ *          "STT":"81",
+ *          "Số TC":"1",
+ *          "Tên môn học":"Bóng bàn"
+ *        },
+ *        "__v":1,
+ *        "module": {
+ *          "__v":0,
+ *          "Mã học phần":"PES 1030",
+ *          "Học Phần":"Bóng bàn 1",
+ *          "TC":1,
+ *          "Mã LHP":"PES 1030 8",
+ *          "SS DK":45,
+ *          "Giảng viên":"TT GDTC",
+ *          "Buổi":"Chiều",
+ *          "Thứ":3,
+ *          "Tiết":"8-9",
+ *          "Giảng đường":"Sân bãi",
+ *          "Ghi chú":"",
+ *          "_id":"58fe378c3d91cf5327776c1c"}
+ *        }
+ *      }]
  */
 exports.getSchedule = function (req, res) {
-  console.log(`@ GET schedule`.yellow + req.user.username.blue)
+  console.log(`@ GET schedule `.yellow + req.user.username.blue)
 
   User.findOne({username: req.user.username}, (err, user) => {
     if (err) {
@@ -82,7 +116,7 @@ exports.getSchedule = function (req, res) {
     }
     if (user.role == ROLE.ADMIN) {
       let username = req.body.username || req.user.username
-      Schedule.find({username: username}, (err, data) => {
+      Schedule.find({'info.Mã SV' : username}, (err, data) => {
         if (err) {
           res.status(204).send('oops something wrong')
           return
@@ -91,7 +125,7 @@ exports.getSchedule = function (req, res) {
         return
       })
     } else {
-      Schedule.find({owner: req.user.username}, (err, data) => {
+      Schedule.find({'info.Mã SV': req.user.username}, (err, data) => {
         if (err) {
           res.status(204).send('oops something wrong')
           return
@@ -103,20 +137,22 @@ exports.getSchedule = function (req, res) {
 }
 
 /**
- * @api {GET} /api/note
- * @apiDescription get personal notes
- * @apiExample localhost:3000/api/note
- * @apiHeader (Authorization) {String} JWT + token
+ * @api {GET} /api/notes get notes
+ * @apiGroup Note
+ * @apiDescription get notes
+ * @apiExample Example
+ *    localhost:3000/api/note
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username[Admin only, OPTIONAL]
+ * @apiParam {Number} [username=none] Admin permission
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     {
- *        [note1, note2, note3]
- *     }
+ *     [ {"_id":"58fea1fa7f255612309b6872","type":"ugent","priority":3,"end":1,"begin":2,"description":"buy milk if they have eggs, bring 6","owner":"14020791","__v":0},
+ *       {"_id":"58fea8cc5442e11c9821f9e6","type":"ugent","priority":3,"end":1,"begin":2,"description":"buy milk if they have eggs, bring 6","owner":"14020791","__v":0}
+ *     ]
  */
 
 exports.getNote = function (req, res) {
@@ -129,7 +165,7 @@ exports.getNote = function (req, res) {
     }
     if (user.role == ROLE.ADMIN) {
       let username = req.body.username || req.user.username
-      Note.find({username: username}, (err, data) => {
+      Note.find({owner: username}, (err, data) => {
         if (err) {
           res.status(204).send('oops something wrong')
           return
@@ -150,26 +186,26 @@ exports.getNote = function (req, res) {
 }
 
 /**
- * @api {POST} /api/note
+ * @api {POST} /api/notes create note
+ * @apiGroup Note
  * @apiDescription add a note
- * @apiExample localhost:3000/api/note
- * @apiHeader (Authorization) {String} JWT + token
+ * @apiExample Example
+ *    localhost:3000/api/note
+ * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
- * @apiParam {Number} [username] username required
- * @apiParam {String} [description] description [OPTIONAL, default empty]
- * @apiParam {Number} [begin] start [OPTIONAL, default 0]
- * @apiParam {Number} [end] deadline [OPTIONAL, default 0]
- * @apiParam {Number} [priority] priority [OPTIONAL, default 0]
- * @apiParam {String} [type] type [OPTIONAL, default basic]
- * @apiParam {json} [other [OPTIONAL]
+ * @apiParam {Number} username username
+ * @apiParam {String} [description=empty] description
+ * @apiParam {Number} [begin=0] start
+ * @apiParam {Number} [end=0] deadline
+ * @apiParam {Number} [priority=0] priority [OPTIONAL, default 0]
+ * @apiParam {String} [type=empty] type
+ * @apiParam {json} [other={}] other information
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     {
- *       "noteID": 124322545,
- *     }
+ *     {"noteId":"58feaf6ab8884123142e8bb1"}
  */
 
 exports.newNote = function (req, res) {
@@ -183,22 +219,122 @@ exports.newNote = function (req, res) {
     let username = req.user.username
     if (user.role == ROLE.ADMIN)
       username = req.body.username || username
-    let node = new Node()
-    node.owner = username
-    node.description = req.body.description || 'empty'
-    node.begin = req.body.begin || 0
-    node.end = req.body.end || 0
-    node.priority = req.body.priority || 0
-    node.type = req.body.type || 'basic'
-    node.other = req.body.other
-    node.save((err, n) => {
+    let note = new Note()
+    note.owner = username
+    note.description = req.body.description || 'empty'
+    note.begin = req.body.begin || 0
+    note.end = req.body.end || 0
+    note.priority = req.body.priority || 0
+    note.type = req.body.type || 'basic'
+    note.other = req.body.other
+    note.save((err, n) => {
       if (err) {
         res.status(204).send('oops, can not create new note')
         return
       }
       res.status(200).send({
-        nodeID: n._id
+        noteId: n._id
       })
     })
+  })
+}
+
+/**
+ * @api {PUT} /api/notes modify note
+ * @apiGroup Note
+ * @apiDescription modify an existing note
+ * @apiExample Example
+ *    localhost:3000/api/note
+ * @apiHeader (Authorization) {String} JAuthorization WT + token
+ * @apiHeaderExample {json} Header example:
+ *    {
+ *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
+ *    }
+ * @apiParam {id} ObjectId objectId required
+ * @apiParam {String} [description] description [OPTIONAL, default empty]
+ * @apiParam {Number} [begin] start [OPTIONAL, default 0]
+ * @apiParam {Number} [end] deadline [OPTIONAL, default 0]
+ * @apiParam {Number} [priority] priority [OPTIONAL, default 0]
+ * @apiParam {String} [type] type [OPTIONAL, default basic]
+ * @apiParam {json} [other [OPTIONAL]
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "ok ok!!"
+ *     }
+ */
+
+exports.modifyNote = function(req, res) {
+  let username = req.user.username
+
+  let noteID = req.query.id
+  if (!mongoose.Types.ObjectId.isValid(noteID)){
+    res.status(400).send('bad request, id field must be specified')
+    return
+  }
+
+  Note.findById({_id: noteID}, (err, note) => {
+    if (err) {
+      console.log(data.red)
+      return
+    }
+    if (!note) {
+      res.status(404).send('not found')
+      return
+    }
+    if (note.owner !== username) {
+      res.status(204).send('you cant modify note of other')
+      return
+    }
+    note.description = req.query.description || note.description
+    note.begin = req.query.begin || note.begin
+    note.end = req.query.end || note.end
+    note.priority = req.query.priority || note.priority
+    note.type = req.query.type || note.type
+    note.other = req.query.other || note.other
+    note.save((err, success) => {
+      if (err) {
+        res.status(204).send('oops something wrong')
+        return
+      }
+      res.status(200).send('ok ok!!')
+    })
+  })
+}
+
+/**
+ * @api {DELETE} /api/notes/:noteId delete note
+ * @apiGroup Note
+ * @apiDescription delete an existing note
+ * @apiExample Example
+ *    localhost:3000/api/note/58feaf6ab8884123142e8bb1
+ * @apiHeader (Authorization) {String} Authorization JWT + token
+ * @apiHeaderExample {json} Header example:
+ *    {
+ *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
+ *    }
+ * @apiParam {id} ObjectId objectId required
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "ok ok!!"
+ *     }
+ */
+
+exports.deleteNote = function(req, res) {
+  let username = req.user.username
+
+  let noteId = req.params.noteId
+  if (!mongoose.Types.ObjectId.isValid(noteId)){
+    res.status(400).send('bad request, id field must be specified')
+    return
+  }
+
+  Note.findByIdAndRemove({_id: noteId}, (err) => {
+    if (err) {
+      console.log(data.red)
+      return
+    }
+    res.status(200).send('ok ok!!')
   })
 }
