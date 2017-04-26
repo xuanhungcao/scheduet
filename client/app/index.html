@@ -17,9 +17,12 @@
     <link rel="stylesheet" href="styles/main.css" />
     <!-- endbuild -->
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/AdminLTE.min.css" />
-    <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/_all-skins.min.css"/>
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="app/styles/main.css"/>
     <base href="/">
 </head>
 <body ng-app="clientApp" class="hold-transition skin-purple layout-top-nav">
@@ -31,8 +34,7 @@
 <!-- Main view -->
 <div class="wrapper">
     <navbar></navbar>
-    <div ui-view="" style="height: 1000px"></div>
-    <!-- <calendar></calendar> -->
+    <div ui-view=""></div>
     <footer></footer>
 </div>
 
@@ -57,6 +59,8 @@
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/AdminLTE/dist/js/app.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- AdminLTE App -->
@@ -66,6 +70,10 @@
 <!-- FastClick -->
 <script src="bower_components/AdminLTE/plugins/fastclick/fastclick.js"></script>
 <!-- Add script files here -->
+<script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
 <script src="scripts/services/user.js"></script>
