@@ -9,20 +9,23 @@
 const name = 'calendar';
 
 class CalendarCtrl {
-  constructor($scope) {
-    this.eventSources = [{
-        title: 'event1',
-        start: '2017-04-20',
-        color: 'red',
-        textColor: 'white'
-    }, {
-        title: 'event2',
-        start: '2017-04-29',
-        color: 'pink',
-        textColor: 'blue'
-    }];
+  constructor() {
+    var that = this;
+    that.eventSources = { 
+        events: [{
+            title: 'event1',
+            start: '2017-04-20',
+            color: 'red',
+            textColor: 'white'
+        }, {
+            title: 'event2',
+            start: '2017-04-29',
+            color: 'pink',
+            textColor: 'blue'
+        }]
+    };
 
-    this.config = {
+    that.uiConfig = {
         height: 450,
         editable: true,
         header:{
@@ -32,15 +35,14 @@ class CalendarCtrl {
         },
         customButtons: {
             myButton: {
-            text:'fuck',
+            text:'hello',
             click: function() {
                 alert('oh yeahh');
             }
             }
         },
-        events: this.eventSources,
         eventClick: function(event, jsEvent, view) {
-            $scope.currentEvent = event
+            that.currentEvent = event
         }       
     }; 
   }
