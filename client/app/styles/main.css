@@ -4,6 +4,14 @@
 .wrapper {
 	background-color: #fff !important;
 }
-.event-detail {
-	margin-top: 50px
+.side-bar {
+	margin-top: 10px;
+}
+
+.container {
+	width: 95%;
+}
+
+.new-event {
+	padding: 20px 20px 20px 20px;
 }

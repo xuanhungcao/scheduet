@@ -1,9 +1,7 @@
 <div class="container">
-	<form class="event-detail">
-		<div class="col-md-3 form-group">
-			<label>Event Title</label>
-			<input class="form-control" ng-model="currentEvent.title">
-		</div>
+	<form class="col-md-2 side-bar">
+		<button type="button" class="btn btn-primary" ng-click="createEvent()">Create an event</button>
+		{{newEvent}}
 	</form>
-	<div class="col-md-9" ui-calendar="uiConfig" ng-model="eventSources"></div>
+	<div class="col-md-10" ui-calendar="uiConfig" ng-model="eventSources"></div>
 </div>
