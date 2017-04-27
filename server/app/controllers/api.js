@@ -1,7 +1,8 @@
+
 const ROLE = require('../config/role')
 const User = require('../models/user')
 const Schedule = require('../models/schedule')
-const Note = require('../models/note')
+const Event = require('../models/event')
 const mongoose = require('mongoose')
 
 /**
@@ -29,33 +30,33 @@ const mongoose = require('mongoose')
  */
 
 exports.getProfile = function (req, res) {
-  if (!req.params.username) {
-    res.status(400).send('bad request, missing username field')
-    return
-  }
-  if (!Number.isInteger(Number(req.params.username))) {
-    res.status(400).send('bad request, username must be numeric')
-    return
-  }
-  if (req.user.username != req.params.username) {
-    res.status(403).send('forbidden, cannot get this user')
-    return
-  }
-
-  console.log(`@ GET profile `.yellow + req.params.username.blue)
-
-  User.findOne({username: req.params.username}, (err, user) => {
-    if (err) {
-      res.status(204).send('oops something wrong')
-      return
+    if (!req.params.username) {
+        res.status(400).send('bad request, missing username field')
+        return
     }
-    if (!user) {
-      res.status(404).send('not found')
-      return
+    if (!Number.isInteger(Number(req.params.username))) {
+        res.status(400).send('bad request, username must be numeric')
+        return
+    }
+    if (req.user.username != req.params.username) {
+        res.status(403).send('forbidden, cannot get this user')
+        return
     }
 
-    res.status(200).send(user)
-  })
+    console.log(`@ GET profile `.yellow + req.params.username.blue)
+
+    User.findOne({username: req.params.username}, (err, user) => {
+        if (err) {
+            res.status(204).send('oops something wrong')
+            return
+        }
+        if (!user) {
+            res.status(404).send('not found')
+            return
+        }
+
+        res.status(200).send(user)
+    })
 }
 
 /**
@@ -83,27 +84,27 @@ exports.getProfile = function (req, res) {
  *     ]
  */
 exports.getUsers = function (req, res) {
-  User.findOne({username: req.user.username}, (err, user) => {
-    if (err) {
-      res.status(204).send('oops something wrong')
-      return
-    }
-    if (!user) {
-      res.status(404).send('not found')
-      return
-    }
-    if (user.role == ROLE.ADMIN) {
-      User.find({}, (err, users) => {
+    User.findOne({username: req.user.username}, (err, user) => {
         if (err) {
-          res.status(204).send('oops can not fetch all users');
-          return
+            res.status(204).send('oops something wrong')
+            return
         }
-        res.status(200).send(users)
-      })
-    } else {
-      res.status(403).send('forbidden, cannot fetch all users');
-    }
-  })
+        if (!user) {
+            res.status(404).send('not found')
+            return
+        }
+        if (user.role == ROLE.ADMIN) {
+            User.find({}, (err, users) => {
+                if (err) {
+                    res.status(204).send('oops can not fetch all users');
+                    return
+                }
+                res.status(200).send(users)
+            })
+        } else {
+            res.status(403).send('forbidden, cannot fetch all users');
+        }
+    })
 }
 
 /**
@@ -154,42 +155,42 @@ exports.getUsers = function (req, res) {
  *      }]
  */
 exports.getSchedule = function (req, res) {
-  console.log(`@ GET schedule `.yellow + req.user.username.blue)
+    console.log(`@ GET schedule `.yellow + req.user.username.blue)
 
-  User.findOne({username: req.user.username}, (err, user) => {
-    if (err) {
-      res.status(204).send('oops something wrong')
-      return
-    }
-    if (user.role == ROLE.ADMIN) {
-      let username = req.body.username || req.user.username
-      Schedule.find({'info.Mã SV' : username}, (err, data) => {
+    User.findOne({username: req.user.username}, (err, user) => {
         if (err) {
-          res.status(204).send('oops something wrong')
-          return
+            res.status(204).send('oops something wrong')
+            return
         }
-        res.status(200).send(data)
-        return
-      })
-    } else {
-      Schedule.find({'info.Mã SV': req.user.username}, (err, data) => {
-        if (err) {
-          res.status(204).send('oops something wrong')
-          return
+        if (user.role == ROLE.ADMIN) {
+            let username = req.body.username || req.user.username
+            Schedule.find({'info.Mã SV' : username}, (err, data) => {
+                if (err) {
+                    res.status(204).send('oops something wrong')
+                    return
+                }
+                res.status(200).send(data)
+                return
+            })
+        } else {
+            Schedule.find({'info.Mã SV': req.user.username}, (err, data) => {
+                if (err) {
+                    res.status(204).send('oops something wrong')
+                    return
+                }
+                res.status(200).send(data)
+            })
         }
-        res.status(200).send(data)
-      })
-    }
-  })
+    })
 }
 
 /**
- * @api {GET} /api/notes get notes
- * @apiGroup Note
- * @apiDescription get notes
+ * @api {GET} /api/events get Events
+ * @apiGroup Event
+ * @apiDescription get Events
  * @apiExample Example
- *    localhost:3000/api/note
- *    http://54.169.225.125:3000/api/note
+ *    localhost:3000/api/events
+ *    http://54.169.225.125:3000/api/events
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -198,48 +199,46 @@ exports.getSchedule = function (req, res) {
  * @apiParam {Number} [username=none] Admin permission
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     [ {"_id":"58fea1fa7f255612309b6872","type":"ugent","priority":3,"end":1,"begin":2,"description":"buy milk if they have eggs, bring 6","owner":"14020791","__v":0},
- *       {"_id":"58fea8cc5442e11c9821f9e6","type":"ugent","priority":3,"end":1,"begin":2,"description":"buy milk if they have eggs, bring 6","owner":"14020791","__v":0}
- *     ]
+ *     [{"_id":"5902127813081b03c04a39be","weekRepeating":false,"allDay":true,"title":"pussy","priority":0,"end":1,"begin":0,"description":"pussy","owner":"14020791","__v":0}]
  */
 
-exports.getNote = function (req, res) {
-  console.log(`@ GET note`.yellow + req.user.username.blue)
+exports.getEvent = function (req, res) {
+    console.log(`@ GET Event`.yellow + req.user.username.blue)
 
-  User.findOne({username: req.user.username}, (err, user) => {
-    if (err) {
-      res.status(204).send('oops something wrong')
-      return
-    }
-    if (user.role == ROLE.ADMIN) {
-      let username = req.body.username || req.user.username
-      Note.find({owner: username}, (err, data) => {
+    User.findOne({username: req.user.username}, (err, user) => {
         if (err) {
-          res.status(204).send('oops something wrong')
-          return
+            res.status(204).send('Oops something wrong')
+            return
         }
-        res.status(200).send(data)
-        return
-      })
-    } else {
-      Note.find({owner: req.user.username}, (err, data) => {
-        if (err) {
-          res.status(204).send('oops something wrong')
-          return
+        if (user.role == ROLE.ADMIN) {
+            let username = req.body.username || req.user.username
+            Event.find({owner: username}, (err, data) => {
+                if (err) {
+                    res.status(204).send('Oops something wrong')
+                    return
+                }
+                res.status(200).send(data)
+                return
+            })
+        } else {
+            Event.find({owner: req.user.username}, (err, data) => {
+                if (err) {
+                    res.status(204).send('Oops something wrong')
+                    return
+                }
+                res.status(200).send(data)
+            })
         }
-        res.status(200).send(data)
-      })
-    }
-  })
+    })
 }
 
 /**
- * @api {POST} /api/notes create note
- * @apiGroup Note
- * @apiDescription add a note
+ * @api {POST} /api/events create Event
+ * @apiGroup Event
+ * @apiDescription add a Event
  * @apiExample Example
- *    localhost:3000/api/note
- *    http://54.169.225.125:3000/api/note
+ *    localhost:3000/api/events
+ *    http://54.169.225.125:3000/api/events
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -249,64 +248,69 @@ exports.getNote = function (req, res) {
  * @apiParam {String} [description=empty] description
  * @apiParam {Number} [begin=0] start
  * @apiParam {Number} [end=0] deadline
- * @apiParam {Number} [priority=0] priority [OPTIONAL, default 0]
- * @apiParam {String} [type=empty] type
- * @apiParam {json} [other={}] other information
+ * @apiParam {Number} [priority=0] priority
+ * @apiParam {String} [title=empty] title
+ * @apiParam {String} [location=empty] location
+ * @apiParam {Boolean} [allDay=false] repeat all days of week
+ * @apiParam {Boolean} [weekRepeating=false] repeat weekly
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     {"noteId":"58feaf6ab8884123142e8bb1"}
+ *     {"EventId":"58feaf6ab8884123142e8bb1"}
  */
 
-exports.newNote = function (req, res) {
-  console.log(`@ GET note`.yellow + req.user.username.blue)
+exports.newEvent = function (req, res) {
+    console.log(`@ GET Event`.yellow + req.user.username.blue)
 
-  User.findOne({username: req.user.username}, (err, user) => {
-    if (err) {
-      res.status(204).send('oops something wrong')
-      return
-    }
-    let username = req.user.username
-    if (user.role == ROLE.ADMIN)
-      username = req.body.username || username
-    let note = new Note()
-    note.owner = username
-    note.description = req.body.description || 'empty'
-    note.begin = req.body.begin || 0
-    note.end = req.body.end || 0
-    note.priority = req.body.priority || 0
-    note.type = req.body.type || 'basic'
-    note.other = req.body.other
-    note.save((err, n) => {
-      if (err) {
-        res.status(204).send('oops, can not create new note')
-        return
-      }
-      res.status(200).send({
-        noteId: n._id
-      })
+    User.findOne({username: req.user.username}, (err, user) => {
+        if (err) {
+            res.status(204).send('oops something wrong')
+            return
+        }
+        let username = req.user.username
+        if (user.role == ROLE.ADMIN)
+            username = req.body.username || username
+        let event = new Event()
+        event.owner = username
+        event.description = req.body.description || ''
+        event.begin = req.body.begin || 0
+        event.end = req.body.end || 0
+        event.priority = req.body.priority || 0
+        event.title = req.body.title || ''
+        event.allDay = req.body.allDay == 'true' ? true : false
+        event.weekRepeating = req.body.weekRepeating == 'true' ? true : false
+        event.save((err, n) => {
+            if (err) {
+                res.status(204).send('oops, can not create new Event')
+                return
+            }
+            res.status(200).send({
+                eventId: n._id
+            })
+        })
     })
-  })
 }
 
 /**
- * @api {PUT} /api/notes modify note
- * @apiGroup Note
- * @apiDescription modify an existing note
+ * @api {PUT} /api/events modify Event
+ * @apiGroup Event
+ * @apiDescription modify an existing Event
  * @apiExample Example
- *    localhost:3000/api/note
- *    http://54.169.225.125:3000/api/note
+ *    localhost:3000/api/events
+ *    http://54.169.225.125:3000/api/events
  * @apiHeader (Authorization) {String} JAuthorization WT + token
  * @apiHeaderExample {json} Header example:
  *    {
  *        Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lb2RvcmV3YW4iLCJwYXNz
  *    }
  * @apiParam {id} ObjectId objectId required
- * @apiParam {String} [description] description [OPTIONAL, default empty]
- * @apiParam {Number} [begin] start [OPTIONAL, default 0]
- * @apiParam {Number} [end] deadline [OPTIONAL, default 0]
- * @apiParam {Number} [priority] priority [OPTIONAL, default 0]
- * @apiParam {String} [type] type [OPTIONAL, default basic]
- * @apiParam {json} [other [OPTIONAL]
+ * @apiParam {String} [description=empty] description
+ * @apiParam {Number} [begin=0] start
+ * @apiParam {Number} [end=0] deadline
+ * @apiParam {Number} [priority=0] priority
+ * @apiParam {String} [title=empty] title
+ * @apiParam {String} [location=empty] location
+ * @apiParam {Boolean} [allDay=false] repeat all days of week
+ * @apiParam {Boolean} [weekRepeating=false] repeat weekly
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -314,51 +318,53 @@ exports.newNote = function (req, res) {
  *     }
  */
 
-exports.modifyNote = function(req, res) {
-  let username = req.user.username
+exports.modifyEvent = function(req, res) {
+    let username = req.user.username
 
-  let noteID = req.query.id
-  if (!mongoose.Types.ObjectId.isValid(noteID)){
-    res.status(400).send('bad request, id field must be specified')
-    return
-  }
-
-  Note.findById({_id: noteID}, (err, note) => {
-    if (err) {
-      console.log(data.red)
-      return
-    }
-    if (!note) {
-      res.status(404).send('not found')
-      return
-    }
-    if (note.owner !== username) {
-      res.status(204).send('you cant modify note of other')
-      return
-    }
-    note.description = req.query.description || note.description
-    note.begin = req.query.begin || note.begin
-    note.end = req.query.end || note.end
-    note.priority = req.query.priority || note.priority
-    note.type = req.query.type || note.type
-    note.other = req.query.other || note.other
-    note.save((err, success) => {
-      if (err) {
-        res.status(204).send('oops something wrong')
+    let EventID = req.query.id
+    if (!mongoose.Types.ObjectId.isValid(EventID)){
+        res.status(400).send('bad request, id field must be specified')
         return
-      }
-      res.status(200).send('ok ok!!')
+    }
+
+
+    Event.findById({_id: EventID}, (err, event) => {
+        if (err) {
+            console.log(data.red)
+            return
+        }
+        if (!event) {
+            res.status(404).send('not found')
+            return
+        }
+        if (event.owner !== username) {
+            res.status(204).send('you cant modify Event of other')
+            return
+        }
+        event.description = req.body.description || Event.description
+        event.begin = req.body.begin || Event.begin
+        event.end = req.body.end || Event.end
+        event.priority = req.body.priority || Event.priority
+        event.title = req.body.title || Event.title
+        event.allDay = req.body.allDay == 'true' ? true : false
+        event.weekRepeating = req.body.weekRepeating == 'true' ? true : false
+        event.save((err, success) => {
+            if (err) {
+                res.status(204).send('oops something wrong')
+                return
+            }
+            res.status(200).send('ok ok!!')
+        })
     })
-  })
 }
 
 /**
- * @api {DELETE} /api/notes/:noteId delete note
- * @apiGroup Note
- * @apiDescription delete an existing note
+ * @api {DELETE} /api/events delete Event
+ * @apiGroup Event
+ * @apiDescription delete an existing Event
  * @apiExample Example
- *    localhost:3000/api/note/58feaf6ab8884123142e8bb1
- *    http://54.169.225.125:3000/api/note/58feaf6ab8884123142e8bb1
+ *    localhost:3000/api/events
+ *    http://54.169.225.125:3000/api/events
  * @apiHeader (Authorization) {String} Authorization JWT + token
  * @apiHeaderExample {json} Header example:
  *    {
@@ -372,20 +378,21 @@ exports.modifyNote = function(req, res) {
  *     }
  */
 
-exports.deleteNote = function(req, res) {
-  let username = req.user.username
+exports.deleteEvent = function(req, res) {
+    let username = req.user.username
 
-  let noteId = req.params.noteId
-  if (!mongoose.Types.ObjectId.isValid(noteId)){
-    res.status(400).send('bad request, id field must be specified')
-    return
-  }
-
-  Note.findByIdAndRemove({_id: noteId}, (err) => {
-    if (err) {
-      console.log(data.red)
-      return
+    let EventId = req.query.id
+    console.log(EventId)
+    if (!mongoose.Types.ObjectId.isValid(EventId)){
+        res.status(400).send('bad request, id field must be specified')
+        return
     }
-    res.status(200).send('ok ok!!')
-  })
+
+    Event.findByIdAndRemove({_id: EventId}, (err) => {
+        if (err) {
+            console.log(data.red)
+            return
+        }
+        res.status(200).send('ok ok!!')
+    })
 }

@@ -23,9 +23,9 @@ module.exports = function(app, passport) {
     apiRoutes.get('/users/:username', requireAuth, apiController.getProfile)
     apiRoutes.get('/users', requireAuth, apiController.getUsers)
     apiRoutes.get('/schedules', requireAuth, apiController.getSchedule)
-    apiRoutes.get('/notes', requireAuth, apiController.getNote)
+    apiRoutes.get('/events', requireAuth, apiController.getEvent)
 
-    apiRoutes.post('/notes', requireAuth, apiController.newNote)
-    apiRoutes.put('/notes', requireAuth, apiController.modifyNote)
-    apiRoutes.delete('/notes/:noteId', requireAuth, apiController.deleteNote)
+    apiRoutes.post('/events', requireAuth, apiController.newEvent)
+    apiRoutes.put('/events', requireAuth, apiController.modifyEvent)
+    apiRoutes.delete('/events', requireAuth, apiController.deleteEvent)
 }
