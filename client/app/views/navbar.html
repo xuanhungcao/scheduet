@@ -2,7 +2,14 @@
     <nav class="navbar navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                <a href="/" class="navbar-brand">This is <b>Logo</b></a>
+                <a href="/">
+                    <div>
+                        <img src="/images/logo.png" class="img-responsive logo-img"/>
+                        <div class="logo-text">
+                            sched<b>UET</b>
+                        </div>
+                    </div>
+                </a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                     <i class="fa fa-bars"></i>
                 </button>
@@ -13,7 +20,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <!-- Notifications Menu -->
-                    <li class="dropdown notifications-menu">
+                    <li ng-if="isAuthenticated" class="dropdown notifications-menu">
                         <!-- Menu toggle button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
@@ -37,7 +44,7 @@
                     </li>
 
                     <!-- Tasks Menu -->
-                    <li class="dropdown tasks-menu">
+                    <li ng-if="isAuthenticated" class="dropdown tasks-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-flag-o"></i>
@@ -78,14 +85,14 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="/images/default-logo.png" class="user-image" alt="User Image">
+                            <img src="/images/default-avatar.png" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{user.username}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="/images/default-logo.png" class="img-circle" alt="User Image">
+                                <img src="/images/default-avatar.png" class="img-circle" alt="User Image">
 
                                 <p>
                                     {{user.username}}
