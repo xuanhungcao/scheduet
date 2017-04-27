@@ -1,11 +1,41 @@
-<form class="new-event">
+<form class="new-event-form form-horizontal">
+	<h1 class="text-center">Create an event</h1>
 	<div class="form-group">
-		<label>Title</label>
-		<input type="text" class="form-control" ng-model="newEvent.title">
-		<label>Description</label>
-		<input type="text" class="form-control" ng-model="newEvent.description">
-		<label>Date</label>
-		<input type="text" class="form-control" ng-model="newEvent.date">
+		<label class="col-md-2 control-lable">Title</label>
+		<div class="col-md-10">
+			<input type="text" class="form-control" ng-model="newEvent.title">
+		</div>
 	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-lable">Start time</label>
+		<div class="col-md-10">
+			<input type="text" class="form-control" ng-model="newEvent.start">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-lable">End time</label>
+		<div class="col-md-10">
+			<input type="text" class="form-control" ng-model="newEvent.end">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-lable">Location</label>
+		<div class="col-md-10">
+			<input type="text" class="form-control" ng-model="newEvent.location">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-lable">Description</label>
+		<div class="col-md-10">
+			<textarea rows="3" class="form-control" ng-model="newEvent.description"></textarea> 
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-lable">Color</label>
+		<div class="col-md-10">
+			<input type="text" class="form-control" ng-model="newEvent.color">
+		</div>
+	</div>
+	
 	<button class="btn btn-primary" ng-click="addEvent()">Add</button>
 </form>

@@ -1,7 +1,12 @@
 <div class="container">
-	<form class="col-md-2 side-bar">
+	<div class="col-md-2 add-event-button">
 		<button type="button" class="btn btn-primary" ng-click="createEvent()">Create an event</button>
 		{{newEvent}}
-	</form>
-	<div class="col-md-10" ui-calendar="uiConfig" ng-model="eventSources"></div>
+	</div>
+	<div class="col-md-10">
+		<div class="info-box">
+		 	<div ui-calendar="uiConfig" ng-model="eventSources">
+		 	</div>
+	 	</div>
+	</div>
 </div>

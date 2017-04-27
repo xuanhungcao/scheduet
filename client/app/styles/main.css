@@ -5,13 +5,21 @@
 	background-color: #fff !important;
 }
 .side-bar {
-	margin-top: 10px;
+	padding-top: 10px;
 }
 
 .container {
 	width: 95%;
 }
 
-.new-event {
+.new-event-form {
 	padding: 20px 20px 20px 20px;
+}
+
+.add-event-button {
+	padding-top: 20px;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #605ca8 !important;
 }

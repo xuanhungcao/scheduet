@@ -7,7 +7,7 @@
  * # calendar
  */
 
-angular.module('app.calendar', ['ui.router', 'ui.calendar'])
+angular.module('app.calendar', ['ui.router', 'ui.calendar', 'ui.bootstrap'])
 .directive('calendar', function () {
     return {
         templateUrl: 'views/calendar.html',

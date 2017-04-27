@@ -10,7 +10,8 @@
 angular.module('app.calendar')
   .controller('NewEventCtrl', function ($scope, $uibModalInstance) {
   	$scope.newEvent = {
-  		color: 'pink',
+  		color: '#605ca8',
+  		start: new Date(),
   		textColor: 'white'
   	}
     $scope.addEvent = function() {

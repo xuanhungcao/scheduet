@@ -10,17 +10,31 @@
 angular.module('app.calendar')
   .controller('CalendarCtrl', function ($scope, $uibModal) {
     $scope.events = [{
-        title: 'Event 1',
-        start: '2017-04-20',
-        color: 'pink',
-        textColor: 'white',
-        description: '1'
+        title: 'Dinner with Ngoc Trinh',
+        start: '2017-04-20T19:00:00',
+        color: '#9723d1',
+        textColor: 'white'
     }, {
-        title: 'Event 2',
-        start: '2017-04-29',
-        color: 'pink',
-        textColor: 'white',
-        description: '2'
+        title: 'Travel to Hawai',
+        start: '2017-04-30',
+        end: '2017-05-02',
+        color: '##22e265',
+        textColor: 'white'
+    },{
+        title: 'Deadline Todo 4',
+        start: '2017-04-28',
+        color: '#f22e2e',
+        textColor: 'white'
+    }, {
+        title: 'International Labour Day',
+        start: '2017-05-01',
+        color: '#46eaa6',
+        textColor: 'white'
+    },{
+        title: 'April Fool Day',
+        start: '2017-04-01',
+        color: '#54f229',
+        textColor: 'white'
     }];
 
     $scope.eventSources = [$scope.events];
