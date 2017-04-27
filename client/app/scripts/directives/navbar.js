@@ -13,11 +13,13 @@ angular.module('app.navbar', [])
       templateUrl: 'views/navbar.html',
       restrict: 'E',
       controller: function($scope, $uibModal, $window, userService) {
-        //Get current user
+        // Get current user
         if (localStorage.getItem('scheduetToken') != null) {
           userService.getUser().then(data => {
             $scope.user = data;
-            console.log($scope.user);
+            // Only get first name
+            let words = $scope.user.info.split(/\s+/);
+            $scope.user.info = words[words.length - 1];
           });
         }
 

@@ -21,7 +21,8 @@ angular
 			'app.calendar',
 			'angular-jwt',
 			'ui.router',
-			'ui.bootstrap'])
+			'ui.bootstrap',
+      'ngAvatar'])
 	.constant('config', {
 		serverUrl: 'http://localhost:3000'
 	})
