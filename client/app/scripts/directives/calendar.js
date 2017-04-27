@@ -6,26 +6,29 @@
  * @description
  * # calendar
  */
-const name = 'calendar';
 
-class CalendarCtrl {
-  constructor() {
-    var that = this;
-    that.eventSources = { 
-        events: [{
-            title: 'event1',
-            start: '2017-04-20',
-            color: 'red',
-            textColor: 'white'
-        }, {
-            title: 'event2',
-            start: '2017-04-29',
-            color: 'pink',
-            textColor: 'blue'
-        }]
-    };
+function CalendarCtrl($scope) {
+    $scope.events = [{
+        title: 'event1',
+        start: '2017-04-20',
+        color: 'red',
+        textColor: 'white'
+    }, {
+        title: 'event2',
+        start: '2017-04-29',
+        color: 'pink',
+        textColor: 'blue'
+    }];
 
-    that.uiConfig = {
+    $scope.eventSources = [$scope.events];
+
+    $scope.eventOnClick = function(_event, eventJs, view) {
+        $scope.currentEvent = $scope.events.find(function(event) {
+            return _event._id == event._id
+        });
+    }
+
+    $scope.uiConfig = {
         height: 450,
         editable: true,
         header:{
@@ -33,19 +36,8 @@ class CalendarCtrl {
             center: 'title',
             right: 'today prev,next myButton'
         },
-        customButtons: {
-            myButton: {
-            text:'hello',
-            click: function() {
-                alert('oh yeahh');
-            }
-            }
-        },
-        eventClick: function(event, jsEvent, view) {
-            that.currentEvent = event
-        }       
-    }; 
-  }
+        eventClick: $scope.eventOnClick
+    }
 }
 
 angular.module('app.calendar', ['ui.router', 'ui.calendar'])
@@ -53,8 +45,7 @@ angular.module('app.calendar', ['ui.router', 'ui.calendar'])
     return {
         templateUrl: '../views/calendar.html',
         restrict: 'E',
-        controller: CalendarCtrl,
-        controllerAs: 'calendar'
+        controller: CalendarCtrl
     }
 })
 .config(function($stateProvider) {

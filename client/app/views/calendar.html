@@ -1,6 +1,9 @@
 <div class="container">
-	<div class="col-md-3">
-		{{calendar.currentEvent.title}}
-	</div>
-	<div class="col-md-9" ui-calendar="calendar.uiConfig" ng-model="calendar.eventSources"></div>
+	<form class="event-detail">
+		<div class="col-md-3 form-group">
+			<label>Event Title</label>
+			<input class="form-control" ng-model="currentEvent.title">
+		</div>
+	</form>
+	<div class="col-md-9" ui-calendar="uiConfig" ng-model="eventSources"></div>
 </div>
