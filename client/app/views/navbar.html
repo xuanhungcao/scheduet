@@ -1,4 +1,4 @@
-<header class="main-header">
+<header class="main-header skin-blue">
     <nav class="navbar navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -85,15 +85,18 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <ng-avatar string="{{user.info}}" bind="true" max-length="1" auto-color="true" class="user-image" width></ng-avatar>
+                            <ng-avatar string="{{user.firstname}}" bind="true" max-length="1" auto-color="true" class="user-image" width></ng-avatar>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{user.username}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="/images/default-avatar.png" class="img-circle" alt="User Image">
-
+                                <!--<img src="/images/default-avatar.png" class="img-circle" alt="User Image">-->
+                                <ng-avatar string="{{user.firstname}}" bind="true" max-length="1" auto-color="true" img-class="img-circle" width="100" style="margin: auto;"></ng-avatar>
+                                <p>
+                                    {{user.info}}
+                                </p>
                                 <p>
                                     {{user.username}}
                                 </p>

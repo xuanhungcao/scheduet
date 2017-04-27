@@ -1,7 +1,6 @@
 .noti-msg {
     font-size: 90%;
 }
-
 .logo-img {
     float: left;
     height: 50px;
@@ -16,4 +15,27 @@
     padding-top: 7px;
     color: white;
     font-family: "Arvo", sans-serif;
+}
+
+.wrapper {
+	background-color: #fff !important;
+}
+.side-bar {
+	padding-top: 10px;
+}
+
+.container {
+	width: 95%;
+}
+
+.new-event-form {
+	padding: 20px 20px 20px 20px;
+}
+
+.add-event-button {
+	padding-top: 20px;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #605ca8 !important;
 }

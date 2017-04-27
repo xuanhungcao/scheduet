@@ -6,22 +6,18 @@
  * @description
  * # calendar
  */
-const name = 'calendar'
 
-angular.module('app.calendar', ['ui.router'])
-  .directive('calendar', function () {
+angular.module('app.calendar', ['ui.router', 'ui.calendar', 'ui.bootstrap'])
+.directive('calendar', function () {
     return {
-      templateUrl: '../views/calendar.html',
-      restrict: 'E',
-      controller: function() {
-      	this.text = 'This is calendar view';
-      },
-      controllerAs: 'calendar'
+        templateUrl: 'views/calendar.html',
+        restrict: 'E',
+        controller: 'CalendarCtrl'
     }
-  })
-  .config(function($stateProvider) {
+})
+.config(function($stateProvider) {
   	$stateProvider.state('calendar', {
   		url: '/',
   		template: '<calendar></calendar>'
   	})
-  });
+});

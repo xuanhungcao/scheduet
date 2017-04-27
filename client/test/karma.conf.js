@@ -29,6 +29,9 @@ module.exports = function(config) {
       'bower_components/AdminLTE/dist/js/app.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-avatar/dist/angular-avatar.min.js',
+      'bower_components/moment/moment.js',
+      'bower_components/fullcalendar/dist/fullcalendar.js',
+      'bower_components/angular-ui-calendar/src/calendar.js',
       // endbower
       'app/scripts/**/*.js',
       'test/mock/**/*.js',

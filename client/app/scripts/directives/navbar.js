@@ -19,7 +19,7 @@ angular.module('app.navbar', [])
             $scope.user = data;
             // Only get first name
             let words = $scope.user.info.split(/\s+/);
-            $scope.user.info = words[words.length - 1];
+            $scope.user.firstname = words[words.length - 1];
           });
         }
 
