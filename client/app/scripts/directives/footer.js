@@ -9,7 +9,7 @@
 angular.module('app.footer', [])
   .directive('footer', function () {
     return {
-      templateUrl: '../views/footer.html',
+      templateUrl: 'views/footer.html',
       restrict: 'E',
       controller: function() {
       }

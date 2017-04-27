@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>schedUET</title>
+    <title>Scheduet</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,10 +18,13 @@
     <link rel="stylesheet" href="styles/footer.css" />
     <!-- endbuild -->
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/AdminLTE.min.css" />
-    <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/_all-skins.min.css"/>
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
     <!-- Ionicons -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Arvo">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    
+    <link rel="stylesheet" href="app/styles/main.css"/>
     <link rel="icon" href="images/icon.png" />
     <base href="/">
 </head>
@@ -30,14 +33,14 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <!-- Main view -->
-    <div class="wrapper">
-        <navbar></navbar>
-        <div ui-view="" style="height: 1000px"></div>
-        <!-- <calendar></calendar> -->
-        <footer></footer>
-    </div>
+<!-- Add your site or application content here -->
+<!-- Main view -->
+<div class="wrapper">
+    <navbar></navbar>
+    <div ui-view=""></div>
+    <!-- <footer></footer> -->
+</div>
+
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -51,31 +54,39 @@
         ga('send', 'pageview');
     </script>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/AdminLTE/dist/js/app.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- AdminLTE App -->
-    <script src="bower_components/AdminLTE/dist/js/app.min.js"></script>
-    <!-- SlimScroll -->
-    <script src="bower_components/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- FastClick -->
-    <script src="bower_components/AdminLTE/plugins/fastclick/fastclick.js"></script>
-    <!-- Add script files here -->
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/services/user.js"></script>
-    <script src="scripts/directives/navbar.js"></script>
-    <script src="scripts/directives/footer.js"></script>
-    <script src="scripts/directives/calendar.js"></script>
-    <script src="scripts/controllers/authentication.js"></script>
-    <!-- endbuild -->
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/AdminLTE/dist/js/app.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- AdminLTE App -->
+<script src="bower_components/AdminLTE/dist/js/app.min.js"></script>
+<!-- SlimScroll -->
+<script src="bower_components/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/AdminLTE/plugins/fastclick/fastclick.js"></script>
+<!-- Add script files here -->
+<script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/services/user.js"></script>
+<script src="scripts/directives/navbar.js"></script>
+<script src="scripts/directives/footer.js"></script>
+<script src="scripts/directives/calendar.js"></script>
+<script src="scripts/controllers/authentication.js"></script>
+<script src="scripts/controllers/calendar.js"></script>
+<script src="scripts/controllers/newevent.js"></script>
+<!-- endbuild -->
 </body>
 </html>
