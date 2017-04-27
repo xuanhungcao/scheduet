@@ -54,8 +54,17 @@ exports.getProfile = function (req, res) {
             res.status(404).send('not found')
             return
         }
-
-        res.status(200).send(user)
+        Schedule.findOne({
+            'info.Mã SV' : user.username
+        }, (err, data) => {
+            if (err) {
+                res.status(204).send('oops something wrong')
+                return
+            }
+            let name = data ? data.info['Họ và tên'] : 'Anonymous'
+            user.info = name
+            res.status(200).send(user)
+        })
     })
 }
 
