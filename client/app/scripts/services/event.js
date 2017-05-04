@@ -21,9 +21,25 @@ angular.module('clientApp')
 
     	$http.get(config.serverUrl + '/api/events', getConfig)
     	.then(function(res) {
-    		callback(null, res.data);
+    		callback(null, res);
     	}, function(err) {
     		callback(err);
     	});
     };
+
+    this.createEvent = function(event, callback) {
+        var token = localStorage.getItem('scheduetToken');
+        var postConfig = {
+            header : {
+                Authorization: 'JWT ' + token
+            }
+        };
+
+        $http.post(config.serverUrl + '/api/events', event, postConfig)
+        .then(function(res) {
+            callback(null, res);
+        }, function(err) {
+            callback(err);
+        })
+    }
   });

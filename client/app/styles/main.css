@@ -45,10 +45,12 @@ body.modal-open[style] {
 	padding: 20px 20px 20px 20px;
 }
 
+.new-event-form > h1 {
+    margin-bottom: 10px;
+}
+
 .add-event-button {
 	padding-top: 20px;
 }
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
-    background-color: #605ca8 !important;
-}
+

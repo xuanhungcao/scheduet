@@ -16,18 +16,18 @@ const sampleEvents = [{
 }];
 
 angular.module('app.calendar')
-  .controller('CalendarCtrl', function ($scope, $uibModal, eventService, userService) {
+  .controller('CalendarCtrl', function ($scope, $window, $uibModal, eventService, userService) {
     $scope.eventSources = [];
 
     if (!userService.loggedIn()) {
         $scope.eventSources.push(sampleEvents);
     } else {
-        eventService.getEvents(function(err, data) {
+        eventService.getEvents(function(err, res) {
             if (err) {
-                alert(err.data);
+                console.log(err);
                 $scope.events = [];
             } else {
-                $scope.events = data;
+                $scope.events = res.data;
                 $scope.eventSources.push($scope.events);
             }
         });
@@ -60,8 +60,15 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(newEvent) {
-            console.log(newEvent);
             $scope.events.push(newEvent);
+            eventService.createEvent(newEvent, function(err, res) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(res);
+                }
+            });
+        }, function() {
         });
     };
   });
