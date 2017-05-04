@@ -14,5 +14,9 @@ angular.module('clientApp')
       var payload = jwtHelper.decodeToken(token);
       return $http.get(config.serverUrl + `/api/users/${payload.username}`)
         .then(res => res.data, res => res.data);
-    }
+    };
+
+    this.loggedIn = function() {
+    	return localStorage.getItem('scheduetToken');
+    };
   });

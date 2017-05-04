@@ -13,11 +13,11 @@ angular.module('app.calendar', ['ui.router', 'ui.calendar', 'ui.bootstrap'])
         templateUrl: 'views/calendar.html',
         restrict: 'E',
         controller: 'CalendarCtrl'
-    }
+    };
 })
 .config(function($stateProvider) {
   	$stateProvider.state('calendar', {
   		url: '/',
   		template: '<calendar></calendar>'
-  	})
+  	});
 });

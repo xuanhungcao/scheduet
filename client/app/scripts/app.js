@@ -11,18 +11,18 @@
 
 /* 
  Each dependency module represents a component of the app
- A module use a directive with template (view) and controller (controller)
+ A module uses a directive with template (view) and controller (controller)
  */
 
-angular
-	.module('clientApp',
+angular.module('clientApp',
 		['app.navbar',
-			'app.footer',
-			'app.calendar',
-			'angular-jwt',
-			'ui.router',
-			'ui.bootstrap',
-      'ngAvatar'])
+		'app.footer',
+		'app.calendar',
+		'angular-jwt',
+		'ui.router',
+		'ui.bootstrap',
+		'ui.calendar',
+      	'ngAvatar'])
 	.constant('config', {
 		serverUrl: 'http://localhost:3000'
 	})
