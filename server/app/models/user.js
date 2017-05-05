@@ -5,6 +5,7 @@ const userSchema = mongoose.Schema({
   username: String,
   password: String,
   role    : String,
+  studentId : Number,
   info    : mongoose.Schema.Types.Mixed,
 });
 
