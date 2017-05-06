@@ -1,22 +1,19 @@
 <div class="login-box">
-    <div class="login-logo">
-        <h1>Scheduet</h1>
-    </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
         <h2 class="login-box-msg">Sign in</h2>
 
         <form role="form" ng-submit="login()">
             <div class="form-group has-feedback">
-                <input ng-change="errorMsg = null; infoMsg = null" type="text" class="form-control" placeholder="Student ID" ng-model="loginData.username">
-                <span class="glyphicon glyphicon-education form-control-feedback"></span>
+                <input ng-change="errorMsg = []; infoMsg = null" type="text" class="form-control" placeholder="Username" ng-model="loginData.username">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input ng-change="errorMsg = null; infoMsg = null" type="password" class="form-control" placeholder="Password" ng-model="loginData.password">
+                <input ng-change="errorMsg = []; infoMsg = null" type="password" class="form-control" placeholder="Password" ng-model="loginData.password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-            <div ng-if="errorMsg != null" class="text-red noti-msg">
-                {{ errorMsg }}
+            <div ng-repeat="error in errorMsg" class="text-red noti-msg">
+                {{ error }}
             </div>
             <div>
                 <input type="submit" class="btn btn-primary btn-block btn-flat" value="Login"/>
