@@ -13,11 +13,20 @@ const sampleEvents = [{
     start: Date.now(),
     color: '#9723d1',
     textColor: 'white'
+},
+{
+    title: 'Phân tích thiết kế hướng đối tượng',
+    start: Date.now()+20*24*60*60*1000,
+    color: 'blue',
+    textColor: 'white'
 }];
 
 angular.module('app.calendar')
-  .controller('CalendarCtrl', function ($scope, $window, $uibModal, eventService, userService) {
+  .controller('CalendarCtrl', function ($scope, $compile, $window, $uibModal, eventService, userService) {
     $scope.eventSources = [];
+    
+    $scope.currentEvent = sampleEvents[0];
+    $scope.events = sampleEvents;
 
     if (!userService.loggedIn()) {
         $scope.eventSources.push(sampleEvents);
@@ -39,6 +48,14 @@ angular.module('app.calendar')
         });
     };
 
+    $scope.eventOnRender = function(_event, element, view) {
+        element.attr({
+            'uib-popover-template': "'views/eventDetail.html'",
+            // 'pop-over'
+        });
+        $compile(element)($scope);
+    };
+
     $scope.uiConfig = {
         aspectRatio: 2,
         editable: false,
@@ -47,7 +64,8 @@ angular.module('app.calendar')
             center: 'title',
             right: 'today prev,next myButton'
         },
-        eventClick: $scope.eventOnClick
+        eventClick: $scope.eventOnClick,
+        eventRender: $scope.eventOnRender
     };
 
     $scope.createEvent = function() {

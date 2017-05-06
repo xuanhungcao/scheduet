@@ -53,4 +53,12 @@ body.modal-open[style] {
 	padding-top: 20px;
 }
 
-
+.event-detail {
+	/*margin-top: 20px;
+	padding-left: 0px;*/
+	/*margin-left: -50px;*/
+	/*width: 140%;*/
+	margin-bottom: 25px;
+	margin-right: -9px;
+	margin-left: -9px;
+}
