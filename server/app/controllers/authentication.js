@@ -50,6 +50,7 @@ exports.register = function(req, res) {
         let newUser = new User()
         newUser.username = req.body.username
         newUser.password = newUser.encrypt(req.body.password)
+        newUser.studentId = req.body.studentId || ''
         newUser.role     = req.body.role || 'Member'
 
         const userInfo = getUserInfo(req)

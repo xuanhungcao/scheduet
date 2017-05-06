@@ -21,11 +21,10 @@ module.exports = function(app, passport) {
     app.use('/api', apiRoutes)
 
     apiRoutes.get('/users/:username', requireAuth, apiController.getProfile)
-    apiRoutes.get('/users', requireAuth, apiController.getUsers)
-    apiRoutes.get('/schedules', requireAuth, apiController.getSchedule)
-    apiRoutes.get('/events', requireAuth, apiController.getEvent)
+    apiRoutes.post('/users/:username', requireAuth, apiController.postProfile)
 
-    apiRoutes.post('/events', requireAuth, apiController.newEvent)
-    apiRoutes.put('/events', requireAuth, apiController.modifyEvent)
+    apiRoutes.get('/events', requireAuth, apiController.getEvent)
+    apiRoutes.post('/events', requireAuth, apiController.postEvent)
+    apiRoutes.put('/events', requireAuth, apiController.putEvent)
     apiRoutes.delete('/events', requireAuth, apiController.deleteEvent)
 }
