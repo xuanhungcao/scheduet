@@ -13,11 +13,12 @@ angular.module('app.navbar')
       username: "",
       password: ""
     };
-    $scope.errorMsg = null;
+    $scope.errorMsg = [];
     $scope.infoMsg = null;
 
     $scope.registerData = {
       username: "",
+      studentId: "",
       password: "",
       password_confirmation: ""
     };
@@ -34,11 +35,11 @@ angular.module('app.navbar')
       $http.post(config.serverUrl + "/login", $scope.loginData)
         .then(res => {
           localStorage.setItem('scheduetToken', res.data.token);
-          $scope.errorMsg = null;
+          $scope.errorMsg = [];
           $uibModalInstance.dismiss();
           $window.location.reload();
         }, res => {
-          $scope.errorMsg = "Login failed, please check username or password again"
+          $scope.errorMsg = ["Login failed, please check username or password again"]
         });
     };
 
@@ -51,16 +52,24 @@ angular.module('app.navbar')
     };
 
     $scope.register = () => {
-      if ($scope.registerData.password !== $scope.registerData.password_confirmation) {
-        $scope.errorMsg = "Password confirmation does not match, please try again";
-        return;
+      console.log($scope.registerData);
+      if (!$scope.registerData.username) {
+        $scope.errorMsg.push("Username is required");
       }
+      if (!$scope.registerData.password) {
+        $scope.errorMsg.push("Password is required");
+      }
+      if ($scope.registerData.password !== $scope.registerData.password_confirmation) {
+        $scope.errorMsg.push("Password confirmation does not match, please try again");
+      }
+      if ($scope.errorMsg.length > 0) return;
+
       $http.post(config.serverUrl + "/register", $scope.registerData)
         .then(res => {
           $scope.infoMsg = "Register successfully";
-          $scope.errorMsg = null;
+          $scope.errorMsg = [];
         }, res => {
-          $scope.errorMsg = res.data.error;
+          $scope.errorMsg = [res.data.error];
           $scope.infoMsg = null;
         })
     };
