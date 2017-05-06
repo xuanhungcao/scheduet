@@ -17,9 +17,6 @@ angular.module('app.navbar', [])
         if (localStorage.getItem('scheduetToken') != null) {
           userService.getUser().then(data => {
             $scope.user = data;
-            // Only get first name
-            let words = $scope.user.info.split(/\s+/);
-            $scope.user.firstname = words[words.length - 1];
           });
         }
 
