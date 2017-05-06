@@ -14,5 +14,11 @@ angular.module('clientApp')
       var payload = jwtHelper.decodeToken(token);
       return $http.get(config.serverUrl + `/api/users/${payload.username}`)
         .then(res => res.data, res => res.data);
+    };
+
+    this.postUser = (profile) => {
+      var token = localStorage.getItem('scheduetToken');
+      var payload = jwtHelper.decodeToken(token);
+      return $http.post(config.serverUrl + `/api/users/${payload.username}`, profile);
     }
   });

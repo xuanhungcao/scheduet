@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    
-</body>
-</html>
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <h2 class="login-box-msg">Profile</h2>
+
+        <form role="form" ng-submit="updateProfile()">
+            <div class="form-group has-feedback">
+                <input ng-change="errorMsg = []; infoMsg = null" type="text" class="form-control" ng-model="profile.username" disabled>
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input ng-change="errorMsg = []; infoMsg = null" type="text" class="form-control" ng-model="profile.studentId">
+                <span class="glyphicon glyphicon-education form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input ng-change="errorMsg = []; infoMsg = null" type="password" class="form-control" placeholder="Password" ng-model="profile.password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div ng-show="profile.password" class="form-group has-feedback">
+                <input ng-change="errorMsg = []; infoMsg = null" type="password" class="form-control" placeholder="Confirm password" ng-model="profile.password_confirmation">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div ng-repeat="error in errorMsg" class="text-red noti-msg">
+                {{ error }}
+            </div>
+            <div ng-if="infoMsg != null" class="text-green noti-msg">
+                {{ infoMsg }}
+            </div>
+            <div>
+                <input type="submit" class="btn btn-primary btn-block btn-flat" value="Update"/>
+            </div>
+        </form>
+    </div>
+    <!-- /.login-box-body -->
+</div>

@@ -17,7 +17,7 @@
             </div>
             <div class="form-group has-feedback">
                 <input ng-change="errorMsg = []; infoMsg = null" ng-model="registerData.password_confirmation" type="password" class="form-control" placeholder="Confirm password">
-                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div ng-repeat="error in errorMsg" class="text-red noti-msg">
                 {{ error }}
