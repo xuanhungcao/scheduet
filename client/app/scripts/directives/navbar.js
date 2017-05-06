@@ -30,6 +30,13 @@ angular.module('app.navbar', [])
         $scope.logout = () => {
           localStorage.removeItem('scheduetToken');
           $window.location.reload()
+        };
+
+        $scope.openProfile = () => {
+          $uibModal.open({
+            controller: 'ProfileCtrl as ProfileCtrl',
+            templateUrl: 'views/profile.html'
+          })
         }
       }
     };

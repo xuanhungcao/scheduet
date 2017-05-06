@@ -98,7 +98,10 @@ exports.postProfile = function (req, res) {
             return
         }
         user.studentId = req.body.studentId
-        user.password = user.encrypt(req.body.password)
+        if (req.body.password) {
+            user.password = user.encrypt(req.body.password)
+        }
+        
         res.status(200).send("ok ok!!!")
     })
 }
