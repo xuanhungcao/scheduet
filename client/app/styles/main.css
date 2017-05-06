@@ -54,11 +54,19 @@ body.modal-open[style] {
 }
 
 .event-detail {
-	/*margin-top: 20px;
-	padding-left: 0px;*/
-	/*margin-left: -50px;*/
-	/*width: 140%;*/
 	margin-bottom: 25px;
-	margin-right: -9px;
-	margin-left: -9px;
+}
+
+.popover-content {
+	padding: 0px;
+}
+
+.popover {
+	width: 300px;
+	border-radius: 0px;
+}
+
+.popover-footer {
+	padding: 10px;
+	margin-bottom: 30px;
 }

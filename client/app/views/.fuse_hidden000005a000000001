@@ -1,0 +1,12 @@
+<div class="container">
+	<div class="col-md-2 add-event-button">
+		<button type="button" class="btn btn-primary" ng-click="createEvent()" ng-style="{'background-color': '#605ca8'}">Create an event</button>
+		{{newEvent}}
+	</div>
+	<div class="col-md-10">
+		<div class="info-box">
+		 	<div ui-calendar="uiConfig" ng-model="eventSources">
+		 	</div>
+	 	</div>
+	</div>
+</div>
