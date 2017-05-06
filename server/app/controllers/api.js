@@ -76,7 +76,7 @@ exports.getProfile = function (req, res) {
  *     }
  */
 
-exports.postProfile = function (req, res) {
+exports.putProfile = function (req, res) {
     if (!req.params.username) {
         res.status(400).send('Bad request, missing username field')
         return
@@ -98,11 +98,14 @@ exports.postProfile = function (req, res) {
             return
         }
         user.studentId = req.body.studentId
-        if (req.body.password) {
-            user.password = user.encrypt(req.body.password)
-        }
-        
-        res.status(200).send("ok ok!!!")
+        user.password = user.encrypt(req.body.password)
+        user.save((err, done) => {
+            if (err) {
+                res.status(204).send('Something wrong')
+                return
+            }
+            res.status(200).send("ok ok!!!")
+        })
     })
 }
 /*=================================================================================*/
@@ -143,7 +146,7 @@ exports.getEvent = function (req, res) {
                 res.status(200).send(data)
             })
         else */
-        Event.find( {$or : [{owner: req.user.username}, {studentId: req.body.studentId}] } , (err, data) => {
+        Event.find( {$or : [{owner: req.user.username}, {studentId: req.user.studentId}] } , (err, data) => {
             if (err) {
                 res.status(204).send('Something wrong')
                     return
