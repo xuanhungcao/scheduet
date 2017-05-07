@@ -21,7 +21,7 @@ module.exports = function(app, passport) {
     app.use('/api', apiRoutes)
 
     apiRoutes.get('/users/:username', requireAuth, apiController.getProfile)
-    apiRoutes.post('/users/:username', requireAuth, apiController.postProfile)
+    apiRoutes.post('/users/:username', requireAuth, apiController.putEvent)
 
     apiRoutes.get('/events', requireAuth, apiController.getEvent)
     apiRoutes.post('/events', requireAuth, apiController.postEvent)

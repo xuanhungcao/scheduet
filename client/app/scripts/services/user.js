@@ -8,7 +8,7 @@
  * Service in the clientApp.
  */
 angular.module('clientApp')
-  .service('userService', function ($http, jwtHelper, config) {
+  .service('userService', function ($http, jwtHelper, config, authManager) {
     this.getUser = () => {
       var token = localStorage.getItem('scheduetToken');
       var payload = jwtHelper.decodeToken(token);
@@ -17,6 +17,11 @@ angular.module('clientApp')
     };
 
     this.loggedIn = function() {
-    	return localStorage.getItem('scheduetToken');
+    	return authManager.isAuthenticated();
     };
+    this.postUser = (profile) => {
+      var token = localStorage.getItem('scheduetToken');
+      var payload = jwtHelper.decodeToken(token);
+      return $http.post(config.serverUrl + `/api/users/${payload.username}`, profile);
+    }
   });
