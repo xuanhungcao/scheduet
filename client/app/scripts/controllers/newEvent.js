@@ -23,14 +23,6 @@ const colorMap = {
 
 angular.module('app.calendar')
   .controller('NewEventCtrl', function ($scope, $uibModalInstance) {
-    var reformatEvent = function(event) {
-      event.start = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
-        event.startDate.getDay(), event.startTime.getHours(), event.startTime.getMinutes()).getTime();
-      event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
-        event.endDate.getDay(), event.endTime.getHours(), event.endTime.getMinutes()).getTime();
-      return event;
-    };
-
     $scope.colors = ['aqua', 'blue', 'teal', 'green', 'gray', 'yellow', 'orange', 'red', 'purple', 
     'navy'];
 
@@ -42,15 +34,15 @@ angular.module('app.calendar')
   		textColor: 'white',
       startDate: new Date(),
       endDate: new Date(),
-      startTime: new Date(0),
-      endTime: new Date(0),
+      startTime: new Date(),
+      endTime: new Date(),
       color: $scope.color,
       repeat: []
   	}
 
     $scope.addEvent = function() {
       if ($scope.eventForm.$valid)
-    	 $uibModalInstance.close(reformatEvent($scope.newEvent));
+    	 $uibModalInstance.close($scope.newEvent);
     }
 
     $scope.cancel = function() {

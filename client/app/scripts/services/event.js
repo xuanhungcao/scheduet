@@ -20,7 +20,6 @@ angular.module('clientApp')
     };
 
     this.createEvent = function(event, callback) {
-        console.log(event);
         $http.post(config.serverUrl + '/api/events', event)
         .then(function(res) {
             callback(null, res);
