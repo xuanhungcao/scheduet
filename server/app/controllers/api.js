@@ -200,6 +200,7 @@ exports.postEvent = function (req, res) {
         event.allDay = req.body.allDay == 'true' ? true : false
         event.repeat = req.body.repeat ? req.body.repeat.split(',') : []
         event.endRepeat = req.body.endRepeat
+        event.color = req.body.color
         event.other = req.body.other
         event.save((err, n) => {
             if (err) {
@@ -267,6 +268,7 @@ exports.putEvent = function (req, res) {
             event.allDay = req.body.allDay == 'true' ? true : false
             event.repeat = req.body.repeat.split(',')
             event.endRepeat = req.body.endRepeat
+            event.color = req.body.color
             event.other = req.body.other
             event.save((err, n) => {
                 if (err) {
