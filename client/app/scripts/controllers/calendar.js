@@ -12,22 +12,42 @@ const sampleEvents = [{
     title: 'Sample Event',
     start: Date.now(),
     color: '#9723d1',
-    textColor: 'white'
+    textColor: 'white',
+    repeat: []
 }];
 
 angular.module('app.calendar')
   .controller('CalendarCtrl', function ($scope, $window, $uibModal, eventService, userService) {
     $scope.eventSources = [];
-
+    var reformat = function(events) {
+        events.forEach(function(event) {
+            event.start = new Date(parseInt(event.start, 10));
+            event.end = new Date(parseInt(event.end, 10));
+            if (event.repeat.length) {
+                event.endRepeat = new Date(parseInt(event.endRepeat, 10));
+                event.startRepeat = event.start;
+                if (event.repeat.length) {
+                    // event.repeat = event.repeat[0];
+                    event.repeat[0]--;
+                }
+                event.dow = event.repeat;
+            }
+            
+        });
+    };
     if (!userService.loggedIn()) {
+        console.log('Add sample events');
         $scope.eventSources.push(sampleEvents);
     } else {
         eventService.getEvents(function(err, res) {
             if (err) {
-                console.log(err);
+                alert('Error loading event');
+                console.log('Error loading event', err);
                 $scope.events = [];
             } else {
+                console.log('Successful loading event', res);
                 $scope.events = res.data;
+                reformat($scope.events);
                 $scope.eventSources.push($scope.events);
             }
         });
@@ -47,7 +67,12 @@ angular.module('app.calendar')
             center: 'title',
             right: 'today prev,next myButton'
         },
-        eventClick: $scope.eventOnClick
+        eventClick: $scope.eventOnClick,
+        eventRender: function(event, element, view) {
+            if (event.repeat.length == 0)
+                return true;
+            return event.start <= event.endRepeat && event.start >= event.startRepeat;
+        }
     };
 
     $scope.createEvent = function() {
@@ -63,9 +88,10 @@ angular.module('app.calendar')
             $scope.events.push(newEvent);
             eventService.createEvent(newEvent, function(err, res) {
                 if (err) {
-                    console.log(err);
+                    alert('Error creating your event');
+                    console.log('Error creating events', err);
                 } else {
-                    console.log(res);
+                    console.log('Successful creating event');
                 }
             });
         }, function() {

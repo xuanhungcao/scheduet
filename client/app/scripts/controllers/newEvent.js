@@ -25,9 +25,9 @@ angular.module('app.calendar')
   .controller('NewEventCtrl', function ($scope, $uibModalInstance) {
     var reformatEvent = function(event) {
       event.start = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
-        event.startDate.getDay(), event.startTime.getHours(), event.startTime.getMinutes());
+        event.startDate.getDay(), event.startTime.getHours(), event.startTime.getMinutes()).getTime();
       event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
-        event.endDate.getDay(), event.endTime.getHours(), event.endTime.getMinutes());
+        event.endDate.getDay(), event.endTime.getHours(), event.endTime.getMinutes()).getTime();
       return event;
     };
 
@@ -45,6 +45,7 @@ angular.module('app.calendar')
       startTime: new Date(0),
       endTime: new Date(0),
       color: $scope.color,
+      repeat: []
   	}
 
     $scope.addEvent = function() {
