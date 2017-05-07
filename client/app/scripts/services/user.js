@@ -19,4 +19,9 @@ angular.module('clientApp')
     this.loggedIn = function() {
     	return authManager.isAuthenticated();
     };
+    this.postUser = (profile) => {
+      var token = localStorage.getItem('scheduetToken');
+      var payload = jwtHelper.decodeToken(token);
+      return $http.post(config.serverUrl + `/api/users/${payload.username}`, profile);
+    }
   });

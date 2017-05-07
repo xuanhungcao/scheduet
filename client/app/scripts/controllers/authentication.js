@@ -60,7 +60,7 @@ angular.module('app.navbar')
         $scope.errorMsg.push("Password is required");
       }
       if ($scope.registerData.password !== $scope.registerData.password_confirmation) {
-        $scope.errorMsg.push("Password confirmation does not match, please try again");
+        $scope.errorMsg.push("Password confirmation does not match");
       }
       if ($scope.errorMsg.length > 0) return;
 
