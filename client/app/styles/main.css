@@ -70,3 +70,7 @@ body.modal-open[style] {
 	padding: 10px;
 	margin-bottom: 30px;
 }
+
+.button-ctn {
+	padding-left: 0px;
+}

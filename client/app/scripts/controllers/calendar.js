@@ -11,18 +11,20 @@
 const sampleEvents = [{
     title: 'Sample Event',
     start: Date.now(),
+    end: Date.now() + 60*60*1000,
     color: '#9723d1',
     textColor: 'white'
 },
 {
     title: 'Phân tích thiết kế hướng đối tượng',
-    start: Date.now()+17*24*60*60*1000,
+    start: Date.now() + 17*24*60*60*1000,
+    end: Date.now() + 17*24*60*60*1000 + 60*60*1000,
     color: 'blue',
     textColor: 'white'
 }];
 
 angular.module('app.calendar')
-  .controller('CalendarCtrl', function ($scope, $compile, $window, $uibModal, eventService, userService) {
+  .controller('CalendarCtrl', function ($scope, $compile, $window, $uibModal, eventService, shareData, userService) {
     if (!userService.loggedIn()) {
         $scope.eventSources.push(sampleEvents);
     } else {
@@ -49,9 +51,6 @@ angular.module('app.calendar')
         $scope.currentEvent = $scope.events.find(function(event) {
             return _event._id === event._id;
         });
-        console.log(_event);
-        console.log($scope.events);
-        console.log($scope.currentEvent);
     };
 
     $scope.eventOnRender = function(_event, element, view) {
@@ -104,22 +103,26 @@ angular.module('app.calendar')
         var popover = $('.popover');
         popover.html('');
         $compile(popover)($scope);
-        console.log(popover);
+
+        //indicate the modal: currently modifying an event
+        shareData.setModifyingEvent($scope.currentEvent);
 
         var modalInstance = $uibModal.open({
             templateUrl: 'views/newEvent.html',
             controller: 'NewEventCtrl'
         });
-        modalInstance.result.then(function(newEvent) {
-            $scope.events.push(newEvent);
-            eventService.createEvent(newEvent, function(err, res) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(res);
-                }
-            });
+        modalInstance.result.then(function(modifiedEvent) {
+            // $scope.events.push(newEvent);
+            // eventService.createEvent(newEvent, function(err, res) {
+            //     if (err) {
+            //         console.log(err);
+            //     } else {
+            //         console.log(res);
+            //     }
+            // });
         }, function() {
+            //turn off modify mode
+            shareData.setModifyingEvent(null);
         });
     };
   });

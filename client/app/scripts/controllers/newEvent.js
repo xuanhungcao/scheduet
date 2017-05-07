@@ -22,7 +22,7 @@ const colorMap = {
 };
 
 angular.module('app.calendar')
-  .controller('NewEventCtrl', function ($scope, $uibModalInstance) {
+  .controller('NewEventCtrl', function ($scope, $uibModalInstance, shareData) {
     var reformatEvent = function(event) {
       event.start = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
         event.startDate.getDay(), event.startTime.getHours(), event.startTime.getMinutes());
@@ -38,14 +38,21 @@ angular.module('app.calendar')
     $scope.startDatePickerOpened = false;
     $scope.endDatePickerOpened = false;
 
-  	$scope.newEvent = {
-  		textColor: 'white',
-      startDate: new Date(),
-      endDate: new Date(),
-      startTime: new Date(0),
-      endTime: new Date(0),
-      color: $scope.color,
-  	}
+    $scope.$watch(
+      function() {return shareData.getModifyingEvent()}, 
+      function (newValue, oldValue) {
+        $scope.newEvent = newValue;
+    });
+
+    if ($scope.newEvent === null)
+      $scope.newEvent = {
+        textColor: 'white',
+        startDate: new Date(),
+        endDate: new Date(),
+        startTime: new Date(0),
+        endTime: new Date(0),
+        color: $scope.color,
+      }
 
     $scope.addEvent = function() {
       if ($scope.eventForm.$valid)
