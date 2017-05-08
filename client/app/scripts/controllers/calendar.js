@@ -44,7 +44,9 @@ angular.module('app.calendar')
             event.endRepeat = new Date(parseInt(event.endRepeat, 10));
             event.startRepeat = event.start;
             if (event.repeat.length) {
-                event.repeat[0]--;
+                for (var i = 0; i < event.repeat.length; i ++)
+                    event.repeat[i]--;
+                // event.repeat[0]--;
             }
             event.dow = event.repeat;
         }
@@ -71,23 +73,38 @@ angular.module('app.calendar')
         });
     }
 
-    var reformatEvent = function(event) {
+    var reformatTime = function(event) {
       event.start = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
         event.startDate.getDate(), event.startTime.getHours(), event.startTime.getMinutes());
       event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
         event.endDate.getDate(), event.endTime.getHours(), event.endTime.getMinutes());
-      event.dow = event.repeat;
+      return event;
+    };
+
+    var reformatRepeat = function(event) {
+      event.startRepeat = event.startDate;
+      var repeatDay = [];
+      for (var i = 0; i < 7; i ++)
+        if (event.repeat[i])
+            repeatDay.push(i);
+      event.repeat = repeatDay;
+      if (repeatDay.length){
+        event.dow = repeatDay;
+      } else {
+        delete event.startRepeat;
+        delete event.endRepeat;
+      }
       return event;
     };
 
     $scope.eventOnClick = function(_event, eventJs, view) {
+        console.log($scope.events);
         $scope.currentEvent = $scope.events.find(function(event) {
             return _event._id === event._id;
         });
     };
 
     $scope.eventOnRender = function(_event, element, view) {
-        console.log('lz');
         element.attr({
             'id': "eventNo" + _event._id,
             'uib-popover-template': "'views/eventDetail.html'",
@@ -126,7 +143,10 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(newEvent) {
-            $scope.events.push(Object.create(newEvent));            
+            // $scope.events.push(Object.create(reformatTime(reformatRepeat(newEvent))));            
+            $scope.events.push(Object.assign({},reformatRepeat(reformatTime(newEvent))));            
+            // $scope.events.push(Object.create(reformatRepeat(newEvent)));            
+            console.log($scope.events);
             clientToServerReformat(newEvent);
             eventService.createEvent(newEvent, function(err, res) {
                 if (err) {
@@ -141,7 +161,8 @@ angular.module('app.calendar')
     };
 
     $scope.deleteEvent = function(){
-        eventService.deleteEvent($scope.currentEvent._id, function(err, res) {
+        if (typeof($scope.currentEvent._id) == 'string')
+            eventService.deleteEvent($scope.currentEvent._id, function(err, res) {
                 if (err) {
                     alert('Error delete your event');
                     console.log('Error delete events', err);
@@ -195,7 +216,7 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(modifiedEvent) {
-            $scope.replace($scope.events, $scope.currentEvent, reformatEvent(modifiedEvent));
+            $scope.replace($scope.events, $scope.currentEvent, reformatTime(modifiedEvent));
         }, function() {
             //turn off modify mode
             shareData.setModifyingEvent(null);

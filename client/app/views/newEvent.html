@@ -34,13 +34,56 @@
 		</div>
 	</div>
 
-	<div class="form-group">
-		<label class="col-md-2 control-lable">All day</label>
-		<div class=col-md-10>
-			<input type="checkbox" ng-model="newEvent.allDay">
+	<div>
+		<div class="form-group col-md-6 checkbox-ctn">
+			<label class="col-md-4 control-lable">All day</label>
+			<div class="col-md-8 checkbox-padding">
+				<input type="checkbox" ng-model="newEvent.allDay">
+			</div>
 		</div>
+
+		<div class="form-group col-md-6">
+			<label class="col-md-4 control-lable">Repeat</label>
+			<div class=col-md-8>
+				<input type="checkbox" ng-model="repeat">
+			</div>
+		</div>	
 	</div>
 
+	<!-- <div class="form-group" ng-show="repeat">
+		<label class="col-md-2 control-lable">StartRepeat time</label>
+		<div class="col-md-3">
+			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.startRepeatDate" is-open="startRepeatDatePickerOpened" ng-required="repeat" close-text="Close" alt-input-formats="altInputFormats" >
+		</div>
+		<div class="col-md-2">
+			<button type="button" class="btn btn-default" ng-click="toggle('startRepeatDatePickerOpened')"><i class="glyphicon glyphicon-calendar"></i></button>
+		</div>
+		<div class="col-md-3">
+			<input type="time" class="form-control" ng-model="newEvent.startRepeatTime" ng-required="!allDay">
+		</div>
+	</div> -->
+
+	<!-- <div class="form-group" ng-show="repeat">
+		<label class="col-md-2 control-lable">EndRepeat time</label>
+		<div class="col-md-3">
+			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endRepeatDate" is-open="endRepeatDatePickerOpened" ng-required="repeat" close-text="Close" alt-input-formats="altInputFormats" >
+		</div>
+		<div class="col-md-2">
+			<button type="button" class="btn btn-default" ng-click="toggle('endRepeatDatePickerOpened')"><i class="glyphicon glyphicon-calendar"></i></button>
+		</div>
+		<div class="col-md-3">
+			<input type="time" class="form-control" ng-model="newEvent.endRepeatTime" ng-required="!allDay">
+		</div>
+	</div>
+	
+	<div class="form-group" ng-show="repeat">
+		<div class="col-md-1"></div>
+		<div ng-repeat="day in dow" class="col-md-1">
+			<label class="control-lable">{{day}}</label>	
+			<input type="checkbox" ng-model="newEvent.repeat[dow.indexOf(day)]">
+		</div>
+	</div>
+ -->
 	<div class="form-group">
 		<label class="col-md-2 control-lable">Description</label>
 		<div class="col-md-10">
