@@ -10,10 +10,13 @@
 
 const sampleEvents = [{
     title: 'Sample Event',
-    start: Date.now(),
-    end: Date.now() + 60*60*1000,
+    start: new Date(Date.now()),
+    end: new Date(Date.now() + 60*60*1000),
+    startRepeat: new Date(Date.now() - 300*24*60*60*1000),
+    endRepeat: new Date(Date.now() + 300*24*60*60*1000),
     color: '#9723d1',
-    repeat: []
+    dow: [0],
+    repeat: [0]
 },
 {
     title: 'Phân tích thiết kế hướng đối tượng',
@@ -41,7 +44,6 @@ angular.module('app.calendar')
             event.endRepeat = new Date(parseInt(event.endRepeat, 10));
             event.startRepeat = event.start;
             if (event.repeat.length) {
-                // event.repeat = event.repeat[0];
                 event.repeat[0]--;
             }
             event.dow = event.repeat;
@@ -69,15 +71,23 @@ angular.module('app.calendar')
         });
     }
 
+    var reformatEvent = function(event) {
+      event.start = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
+        event.startDate.getDate(), event.startTime.getHours(), event.startTime.getMinutes());
+      event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
+        event.endDate.getDate(), event.endTime.getHours(), event.endTime.getMinutes());
+      event.dow = event.repeat;
+      return event;
+    };
+
     $scope.eventOnClick = function(_event, eventJs, view) {
         $scope.currentEvent = $scope.events.find(function(event) {
             return _event._id === event._id;
         });
-        // $scope.currentEvent.title ="changed";
-        // $scope.currentEvent.color = "red";
     };
 
     $scope.eventOnRender = function(_event, element, view) {
+        console.log('lz');
         element.attr({
             'id': "eventNo" + _event._id,
             'uib-popover-template': "'views/eventDetail.html'",
@@ -116,7 +126,6 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(newEvent) {
-            console.log(newEvent);
             $scope.events.push(Object.create(newEvent));            
             clientToServerReformat(newEvent);
             eventService.createEvent(newEvent, function(err, res) {
@@ -131,16 +140,37 @@ angular.module('app.calendar')
         });
     };
 
+    $scope.deleteEvent = function(){
+        eventService.deleteEvent($scope.currentEvent._id, function(err, res) {
+                if (err) {
+                    alert('Error delete your event');
+                    console.log('Error delete events', err);
+                } else {
+                    console.log('Successful delete event');
+                }
+            }, function(){});     
+
+        var popover = $('.popover');
+        popover.html('');
+        $compile(popover)($scope);
+        for (var i = 0; i < $scope.events.length; i ++)
+            if ($scope.events[i]._id == $scope.currentEvent._id)
+                $scope.events.splice(i,1);
+    };    
+
     $scope.replace = function(events, currentEvent, newEvent){
+        // for (var i = 0; i < $scope.events.length; i ++)
+        //     if ($scope.events[i]._id == currentEvent._id)
+        //         $scope.events.splice(i,1);
+
         Object.keys(currentEvent).forEach(function(key) {
             if (key != '_id') 
                 currentEvent[key] = newEvent[key];
         });
-        currentEvent.title = currentEvent.title + ' ';
-        console.log(currentEvent);
+        currentEvent.title += ' ';
+
         var cloneEvent = Object.assign({},newEvent);
         cloneEvent._id = currentEvent._id;
-        console.log(cloneEvent);
         clientToServerReformat(cloneEvent);
 
         eventService.modifyEvent(cloneEvent, function(err, res) {
@@ -157,7 +187,6 @@ angular.module('app.calendar')
         var popover = $('.popover');
         popover.html('');
         $compile(popover)($scope);
-
         //indicate the modal: currently modifying an event
         shareData.setModifyingEvent($scope.currentEvent);
 
@@ -166,18 +195,7 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(modifiedEvent) {
-            $scope.replace($scope.events, $scope.currentEvent, modifiedEvent);
-
-            // $scope.events.push(modifiedEvent);
-            
-            // $scope.events.push(newEvent);
-            // eventService.createEvent(newEvent, function(err, res) {
-            //     if (err) {
-            //         console.log(err);
-            //     } else {
-            //         console.log(res);
-            //     }
-            // });
+            $scope.replace($scope.events, $scope.currentEvent, reformatEvent(modifiedEvent));
         }, function() {
             //turn off modify mode
             shareData.setModifyingEvent(null);

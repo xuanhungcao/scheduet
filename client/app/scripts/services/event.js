@@ -36,4 +36,13 @@ angular.module('clientApp')
             callback(err);
         })
     }
+
+    this.deleteEvent = function(eventId, callback) {
+        $http.delete(config.serverUrl + '/api/events', {params: {_id: eventId}})
+        .then(function(res) {
+            callback(null, res);
+        }, function(err) {
+            callback(err);
+        })
+    }
   });

@@ -1,5 +1,5 @@
 <form name="eventForm" class="new-event-form form-horizontal">
-	<h2 class="text-center">Create an event</h2>
+	<h2 class="text-center">{{title}}</h2>
 
 	<div class="form-group">
 		<label class="col-md-2 control-lable">Title</label>
@@ -56,6 +56,6 @@
         </div>
 	</div>
 	
-	<button class="btn btn-primary" ng-style="{'background-color': color, 'border-color': color}" ng-click="addEvent()">Add</button>
+	<button class="btn btn-primary" ng-style="{'background-color': color, 'border-color': color}" ng-click="addEvent()">{{confirmButton}}</button>
 	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>

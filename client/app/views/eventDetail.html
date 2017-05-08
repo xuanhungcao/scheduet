@@ -4,11 +4,13 @@
   </div>
     <!-- /.box-body -->
 	<div class="box-body">
-		{{currentEvent.start}}
+		<span>{{currentEvent.start | date: "h':'mm a"}}</span>
+    <span> - </span>
+    <span>{{currentEvent.end | date: "h':'mm a"}}</span>
 	</div>
 	<div class="popover-footer">
       <div class="button-ctn pull-right">
-        <button type="submit" class="btn btn-danger ">Delete</button>  
+        <button type="submit" class="btn btn-danger" ng-click="deleteEvent()">Delete</button>  
         <button type="submit" class="btn btn-info" ng-style="{'background-color': currentEvent.color, 'border-color': currentEvent.color}" ng-click="modifyEvent()">Modify</button>
       </div>
 	<!-- </div> -->
