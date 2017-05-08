@@ -267,7 +267,7 @@ exports.putEvent = function (req, res) {
             event.start = req.body.start
             event.end = req.body.end
             event.allDay = req.body.allDay == 'true' ? true : false
-            event.repeat = req.body.repeat.split(',')
+            event.repeat = req.body.repeat
             event.endRepeat = req.body.endRepeat
             event.color = req.body.color
             event.other = req.body.other

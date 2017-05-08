@@ -41,6 +41,11 @@ angular.module('app.calendar')
         endDate: _event.end,
         endTime: _event.end,
         repeat: _event.repeat,
+        start: _event.start,
+        end: _event.end,
+        dow: _event.dow,
+        startRepeat: _event.startRepeat,
+        endRepeat: _event.endRepeat,
         allDay: false,
       };
       return event;
@@ -57,8 +62,8 @@ angular.module('app.calendar')
       title: '',
       startDate: new Date(),
       endDate: new Date(),
-      startTime: new Date(0),
-      endTime: new Date(0),
+      startTime: new Date(),
+      endTime: new Date(),
       color: $scope.color,
       repeat: []
     }
@@ -71,7 +76,7 @@ angular.module('app.calendar')
 
     $scope.addEvent = function() {
       if ($scope.eventForm.$valid)
-    	 $uibModalInstance.close(reformatEvent($scope.newEvent));
+    	 $uibModalInstance.close($scope.newEvent);
     }
 
     $scope.cancel = function() {

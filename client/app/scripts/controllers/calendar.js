@@ -28,21 +28,25 @@ angular.module('app.calendar')
   .controller('CalendarCtrl', 
     function ($scope, $window, $uibModal, $compile, eventService, userService, shareData) {
     $scope.eventSources = [];
-    var reformat = function(events) {
-        events.forEach(function(event) {
-            event.start = new Date(parseInt(event.start, 10));
-            event.end = new Date(parseInt(event.end, 10));
+    var clientToServerReformat = function(event) {
+      event.start = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
+        event.startDate.getDate(), event.startTime.getHours(), event.startTime.getMinutes()).getTime();
+      event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
+        event.endDate.getDate(), event.endTime.getHours(), event.endTime.getMinutes()).getTime();
+    };
+    var serverToClientReformat = function(event) {
+        event.start = new Date(parseInt(event.start, 10));
+        event.end = new Date(parseInt(event.end, 10));
+        if (event.repeat.length) {
+            event.endRepeat = new Date(parseInt(event.endRepeat, 10));
+            event.startRepeat = event.start;
             if (event.repeat.length) {
-                event.endRepeat = new Date(parseInt(event.endRepeat, 10));
-                event.startRepeat = event.start;
-                if (event.repeat.length) {
-                    // event.repeat = event.repeat[0];
-                    event.repeat[0]--;
-                }
-                event.dow = event.repeat;
+                // event.repeat = event.repeat[0];
+                event.repeat[0]--;
             }
+            event.dow = event.repeat;
+        }
             
-        });
     };
 
     if (!userService.loggedIn()) {
@@ -56,24 +60,21 @@ angular.module('app.calendar')
                 $scope.events = [];
             } else {
                 console.log('Successful loading event', res);
-                //RESTORE AFTER DEBUG!!!
                 $scope.events = res.data;
-                reformat($scope.events);
+                $scope.events.forEach(function(event) {
+                    serverToClientReformat(event);
+                });
                 $scope.eventSources.push($scope.events);
             }
         });
     }
 
-    //DEBUG
-    // $scope.eventSources = [sampleEvents];
-    // $scope.currentEvent = sampleEvents[0];
-    // $scope.events = sampleEvents;
-    //
-
     $scope.eventOnClick = function(_event, eventJs, view) {
         $scope.currentEvent = $scope.events.find(function(event) {
             return _event._id === event._id;
         });
+        // $scope.currentEvent.title ="changed";
+        // $scope.currentEvent.color = "red";
     };
 
     $scope.eventOnRender = function(_event, element, view) {
@@ -98,7 +99,6 @@ angular.module('app.calendar')
         },
         eventClick: $scope.eventOnClick,
         eventRender: function(event, element, view) {
-            console.log('lulz');
             $scope.eventOnRender(event, element, view);
             if (event.repeat.length == 0)
                 return true;
@@ -116,7 +116,9 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(newEvent) {
-            $scope.events.push(newEvent);
+            console.log(newEvent);
+            $scope.events.push(Object.create(newEvent));            
+            clientToServerReformat(newEvent);
             eventService.createEvent(newEvent, function(err, res) {
                 if (err) {
                     alert('Error creating your event');
@@ -129,15 +131,26 @@ angular.module('app.calendar')
         });
     };
 
-    $scope.replace = function(events, oldEvent, newEvent){
-        console.log($scope.events.length);
-        // newEvent._id = oldEvent._id;
-        for (var i = 0; i < $scope.events.length; i++)
-            if ($scope.events[i]._id == oldEvent._id){
-                $scope.events.splice(i,1);
-            }
-        $scope.events.push(newEvent);
-        console.log($scope.events);
+    $scope.replace = function(events, currentEvent, newEvent){
+        Object.keys(currentEvent).forEach(function(key) {
+            if (key != '_id') 
+                currentEvent[key] = newEvent[key];
+        });
+        currentEvent.title = currentEvent.title + ' ';
+        console.log(currentEvent);
+        var cloneEvent = Object.assign({},newEvent);
+        cloneEvent._id = currentEvent._id;
+        console.log(cloneEvent);
+        clientToServerReformat(cloneEvent);
+
+        eventService.modifyEvent(cloneEvent, function(err, res) {
+                if (err) {
+                    alert('Error modify your event');
+                    console.log('Error modify events', err);
+                } else {
+                    console.log('Successful modify event');
+                }
+            }, function(){});        
     };
 
     $scope.modifyEvent = function() {

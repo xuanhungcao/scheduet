@@ -20,8 +20,16 @@ angular.module('clientApp')
     };
 
     this.createEvent = function(event, callback) {
-        console.log(event);
         $http.post(config.serverUrl + '/api/events', event)
+        .then(function(res) {
+            callback(null, res);
+        }, function(err) {
+            callback(err);
+        })
+    }
+
+    this.modifyEvent = function(event, callback) {
+        $http.put(config.serverUrl + '/api/events', event)
         .then(function(res) {
             callback(null, res);
         }, function(err) {
