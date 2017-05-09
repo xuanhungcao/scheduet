@@ -31,7 +31,17 @@ angular.module('app.calendar')
         startTime: _event.start,
         endDate: _event.end,
         endTime: _event.end,
+        endRepeatDate: _event.endRepeat,
+        endRepeatTime: _event.endRepeat,
       }, _event);
+      if (_event.isRepeatEvent || _event.repeat.length){
+        var repeatDay = [false,false,false,false,false,false,false]
+        for (var i = 0; i < event.repeat.length; i ++){
+          repeatDay[event.repeat[i]] = true;
+        }
+        event.repeatDay = repeatDay;
+        event.isRepeatEvent = true;
+      }
       return event;
     }
 
@@ -48,7 +58,6 @@ angular.module('app.calendar')
     $scope.color = colorMap[0];
     $scope.title = "Create an event";
     $scope.confirmButton = "Add";
-    $scope.repeat = true;
 
     $scope.newEvent = {
       title: '',
@@ -57,17 +66,18 @@ angular.module('app.calendar')
       startTime: new Date(0),
       endTime: new Date(0),
       color: $scope.color,
-      // startRepeat: new Date(0),
-      // endRepeat: new Date(0),
-      // // startRepeat = start
-      // // startRepeatDate: new Date(),
-      // // startRepeatTime: new Date(0),
-      // endRepeatTime: new Date(0),
-      // endRepeatDate: new Date(),
-      repeat: [false,false,false,false,false,false,false]
+      startRepeat: new Date(0),
+      endRepeat: new Date(0),
+      // startRepeat = start
+      // startRepeatDate: new Date(),
+      // startRepeatTime: new Date(0),
+      endRepeatTime: new Date(0),
+      endRepeatDate: new Date(),
+      isRepeatEvent: false,
+      repeatDay: [false,false,false,false,false,false,false]
       // repeat: []
     }
-    // $scope.newEvent.repeat[new Date().getDay()] = true;
+    $scope.newEvent.repeatDay[new Date().getDay()] = true;
 
     $scope.$watch(
       function() {return shareData.getModifyingEvent()}, 

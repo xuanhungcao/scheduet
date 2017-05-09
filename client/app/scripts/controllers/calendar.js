@@ -36,18 +36,27 @@ angular.module('app.calendar')
         event.startDate.getDate(), event.startTime.getHours(), event.startTime.getMinutes()).getTime();
       event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
         event.endDate.getDate(), event.endTime.getHours(), event.endTime.getMinutes()).getTime();
+
+      event.endRepeat = new Date(event.endRepeatDate.getFullYear(), event.endRepeatDate.getMonth(), 
+        event.endRepeatDate.getDate(), event.endRepeatTime.getHours(), event.endRepeatTime.getMinutes()).getTime();
+      // for (var i = 0; i < event.repeat.length; i ++){
+      //   event.repeat[i]++;
+      // }
+        
     };
     var serverToClientReformat = function(event) {
         event.start = new Date(parseInt(event.start, 10));
         event.end = new Date(parseInt(event.end, 10));
+        event.startRepeat = new Date(parseInt(event.startRepeat, 10));
+        // event.endRepeat = new Date(parseInt(event.endRepeat, 10));
         if (event.repeat.length) {
             event.endRepeat = new Date(parseInt(event.endRepeat, 10));
             event.startRepeat = event.start;
-            if (event.repeat.length) {
-                for (var i = 0; i < event.repeat.length; i ++)
-                    event.repeat[i]--;
-                // event.repeat[0]--;
-            }
+            // if (event.repeat.length) {
+            //     for (var i = 0; i < event.repeat.length; i ++)
+            //         event.repeat[i]--;
+            //     // event.repeat[0]--;
+            // }
             event.dow = event.repeat;
         }
             
@@ -78,27 +87,34 @@ angular.module('app.calendar')
         event.startDate.getDate(), event.startTime.getHours(), event.startTime.getMinutes());
       event.end = new Date(event.endDate.getFullYear(), event.endDate.getMonth(), 
         event.endDate.getDate(), event.endTime.getHours(), event.endTime.getMinutes());
+
+      event.endRepeat = new Date(event.endRepeatDate.getFullYear(), event.endRepeatDate.getMonth(), 
+        event.endRepeatDate.getDate(), event.endRepeatTime.getHours(), event.endRepeatTime.getMinutes());
       return event;
     };
 
     var reformatRepeat = function(event) {
-      event.startRepeat = event.startDate;
-      var repeatDay = [];
-      for (var i = 0; i < 7; i ++)
-        if (event.repeat[i])
-            repeatDay.push(i);
-      event.repeat = repeatDay;
-      if (repeatDay.length){
-        event.dow = repeatDay;
-      } else {
-        delete event.startRepeat;
+      if (!event.isRepeatEvent){
         delete event.endRepeat;
+        event.repeat = [];
+        delete event.dow;
+        return event;
       }
+      event.startRepeat = event.startDate;
+      event.repeat = []
+      for (var i = 0; i < 7; i ++)
+        if (event.repeatDay[i])
+            event.repeat.push(i);
+      event.dow = event.repeat;
+
+      // event.startRepeat = sampleEvents[0].startRepeat;
+      // event.endRepeat = sampleEvents[0].endRepeat;
+      // console.log(event.endRepeat)
+      // console.log(sampleEvents[0].endRepeat);
       return event;
     };
 
     $scope.eventOnClick = function(_event, eventJs, view) {
-        console.log($scope.events);
         $scope.currentEvent = $scope.events.find(function(event) {
             return _event._id === event._id;
         });
@@ -143,10 +159,11 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(newEvent) {
+            newEvent = reformatRepeat(newEvent);
             // $scope.events.push(Object.create(reformatTime(reformatRepeat(newEvent))));            
-            $scope.events.push(Object.assign({},reformatRepeat(reformatTime(newEvent))));            
+            $scope.events.push(Object.assign({},reformatTime(newEvent)));            
             // $scope.events.push(Object.create(reformatRepeat(newEvent)));            
-            console.log($scope.events);
+            
             clientToServerReformat(newEvent);
             eventService.createEvent(newEvent, function(err, res) {
                 if (err) {
@@ -183,13 +200,14 @@ angular.module('app.calendar')
         // for (var i = 0; i < $scope.events.length; i ++)
         //     if ($scope.events[i]._id == currentEvent._id)
         //         $scope.events.splice(i,1);
-
+        
+        console.log(newEvent);
         Object.keys(currentEvent).forEach(function(key) {
             if (key != '_id') 
                 currentEvent[key] = newEvent[key];
         });
         currentEvent.title += ' ';
-
+        
         var cloneEvent = Object.assign({},newEvent);
         cloneEvent._id = currentEvent._id;
         clientToServerReformat(cloneEvent);
@@ -216,10 +234,10 @@ angular.module('app.calendar')
             controller: 'NewEventCtrl'
         });
         modalInstance.result.then(function(modifiedEvent) {
-            $scope.replace($scope.events, $scope.currentEvent, reformatTime(modifiedEvent));
-        }, function() {
-            //turn off modify mode
             shareData.setModifyingEvent(null);
+            $scope.replace($scope.events, $scope.currentEvent, 
+                reformatRepeat(reformatTime(modifiedEvent)));
+        }, function() {
         });
     };
   });

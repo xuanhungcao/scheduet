@@ -45,7 +45,7 @@
 		<div class="form-group col-md-6">
 			<label class="col-md-4 control-lable">Repeat</label>
 			<div class=col-md-8>
-				<input type="checkbox" ng-model="repeat">
+				<input type="checkbox" ng-model="newEvent.isRepeatEvent">
 			</div>
 		</div>	
 	</div>
@@ -63,27 +63,27 @@
 		</div>
 	</div> -->
 
-	<!-- <div class="form-group" ng-show="repeat">
-		<label class="col-md-2 control-lable">EndRepeat time</label>
+	<div class="form-group" ng-show="newEvent.isRepeatEvent">
+		<label class="col-md-2 control-lable">Repeat until</label>
 		<div class="col-md-3">
-			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endRepeatDate" is-open="endRepeatDatePickerOpened" ng-required="repeat" close-text="Close" alt-input-formats="altInputFormats" >
+			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endRepeatDate" is-open="endRepeatDatePickerOpened" ng-required="newEvent.isRepeatEvent" close-text="Close" alt-input-formats="altInputFormats" >
 		</div>
 		<div class="col-md-2">
 			<button type="button" class="btn btn-default" ng-click="toggle('endRepeatDatePickerOpened')"><i class="glyphicon glyphicon-calendar"></i></button>
 		</div>
 		<div class="col-md-3">
-			<input type="time" class="form-control" ng-model="newEvent.endRepeatTime" ng-required="!allDay">
+			<input type="time" class="form-control" ng-model="newEvent.endRepeatTime" ng-required="newEvent.isRepeatEvent">
 		</div>
 	</div>
 	
-	<div class="form-group" ng-show="repeat">
-		<div class="col-md-1"></div>
+	<div class="form-group" ng-show="newEvent.isRepeatEvent">
+		<div class="col-md-1" style="padding-right: 85px;"></div>
 		<div ng-repeat="day in dow" class="col-md-1">
 			<label class="control-lable">{{day}}</label>	
-			<input type="checkbox" ng-model="newEvent.repeat[dow.indexOf(day)]">
+			<input type="checkbox" ng-model="newEvent.repeatDay[dow.indexOf(day)]">
 		</div>
 	</div>
- -->
+
 	<div class="form-group">
 		<label class="col-md-2 control-lable">Description</label>
 		<div class="col-md-10">
