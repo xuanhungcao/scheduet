@@ -8,18 +8,18 @@
  * Controller of the clientApp
  */
 
-// const sampleEvents = [{
-//     title: 'Sample Event',
-//     start: new Date(Date.now()),
-//     end: new Date(Date.now() + 60*60*1000),
-//     startRepeat: new Date(Date.now() - 300*24*60*60*1000),
-//     endRepeat: new Date(Date.now() + 300*24*60*60*1000),
-//     color: '#9723d1',
-//     dow: [0],
-//     repeat: [0]
-// }];
+const sampleEvents = [{
+    title: 'Sample Event',
+    start: new Date(Date.now()),
+    end: new Date(Date.now() + 60*60*1000),
+    startRepeat: new Date(Date.now() - 300*24*60*60*1000),
+    endRepeat: new Date(Date.now() + 300*24*60*60*1000),
+    color: '#9723d1',
+    dow: [0],
+    repeat: [0]
+}];
 
-const sampleEvents = [];
+// const sampleEvents = [];
 
 
 angular.module('app.calendar')
@@ -139,8 +139,9 @@ angular.module('app.calendar')
         });
         modalInstance.result.then(function(newEvent) {
             newEvent = reformatRepeat(newEvent);
+            var cloneEvent = Object.assign({},reformatTime(newEvent));
             // $scope.events.push(Object.create(reformatTime(reformatRepeat(newEvent))));            
-            $scope.events.push(Object.assign({},reformatTime(newEvent)));            
+            // $scope.events.push(cloneEvent);            
             // $scope.events.push(Object.create(reformatRepeat(newEvent)));            
             
             clientToServerReformat(newEvent);
@@ -150,7 +151,14 @@ angular.module('app.calendar')
                     console.log('Error creating events', err);
                 } else {
                     console.log('Successful creating event');
-                    $scope.events[$scope.events.length - 1]._id = res.data._id;
+                    // $scope.events[$scope.events.length - 1]._id = res.data._id;
+                    cloneEvent._id = res.data._id;
+                    // $scope.events.splice($scope.events - 1, 1);
+                    // $scope.events.push(sampleEvents[0]);
+                    // $scope.events.splice($scope.events .length - 1, 1);
+                    $scope.events.push(cloneEvent);
+                    
+                    // console.log(cloneEvent);
                     // console.log($scope.events);
                 }
             });
@@ -227,7 +235,7 @@ angular.module('app.calendar')
     $scope.uiConfig = {
         aspectRatio: 2,
         editable: false,
-        defaultView: 'agendaWeek',
+        defaultView: 'month',
         header:{
             left: 'month agendaWeek agendaDay',
             center: 'title',
