@@ -11,7 +11,7 @@
 	<div class="form-group">
 		<label class="col-md-2 control-lable">Start time</label>
 		<div class="col-md-3">
-			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.startDate" is-open="startDatePickerOpened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" >
+			<input readonly type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.startDate" is-open="startDatePickerOpened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" >
 		</div>
 		<div class="col-md-2">
 			<button type="button" class="btn btn-default" ng-click="toggleStartDatePicker()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -24,7 +24,7 @@
 	<div class="form-group">
 		<label class="col-md-2 control-lable">End time</label>
 		<div class="col-md-3">
-			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endDate" is-open="endDatePickerOpened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" >
+			<input readonly type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endDate" is-open="endDatePickerOpened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" >
 		</div>
 		<div class="col-md-2">
 			<button type="button" class="btn btn-default" ng-click="toggleEndDatePicker()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -66,7 +66,7 @@
 	<div class="form-group" ng-show="newEvent.isRepeatEvent">
 		<label class="col-md-2 control-lable">Repeat until</label>
 		<div class="col-md-3">
-			<input type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endRepeatDate" is-open="endRepeatDatePickerOpened" ng-required="newEvent.isRepeatEvent" close-text="Close" alt-input-formats="altInputFormats" >
+			<input readonly type="text" class="form-control" uib-datepicker-popup ng-model="newEvent.endRepeatDate" is-open="endRepeatDatePickerOpened" ng-required="newEvent.isRepeatEvent" close-text="Close" alt-input-formats="altInputFormats" >
 		</div>
 		<div class="col-md-2">
 			<button type="button" class="btn btn-default" ng-click="toggle('endRepeatDatePickerOpened')"><i class="glyphicon glyphicon-calendar"></i></button>

@@ -8,23 +8,18 @@
  * Controller of the clientApp
  */
 
-const sampleEvents = [{
-    title: 'Sample Event',
-    start: new Date(Date.now()),
-    end: new Date(Date.now() + 60*60*1000),
-    startRepeat: new Date(Date.now() - 300*24*60*60*1000),
-    endRepeat: new Date(Date.now() + 300*24*60*60*1000),
-    color: '#9723d1',
-    dow: [0],
-    repeat: [0]
-},
-{
-    title: 'Phân tích thiết kế hướng đối tượng',
-    start: Date.now() + 17*24*60*60*1000,
-    end: Date.now() + 17*24*60*60*1000 + 60*60*1000,
-    color: 'blue',
-    repeat: []
-}];
+// const sampleEvents = [{
+//     title: 'Sample Event',
+//     start: new Date(Date.now()),
+//     end: new Date(Date.now() + 60*60*1000),
+//     startRepeat: new Date(Date.now() - 300*24*60*60*1000),
+//     endRepeat: new Date(Date.now() + 300*24*60*60*1000),
+//     color: '#9723d1',
+//     dow: [0],
+//     repeat: [0]
+// }];
+
+const sampleEvents = [];
 
 
 angular.module('app.calendar')
@@ -100,7 +95,8 @@ angular.module('app.calendar')
         delete event.dow;
         return event;
       }
-      event.startRepeat = event.startDate;
+      event.startRepeat = new Date(event.startDate.getFullYear(), event.startDate.getMonth(), 
+        event.startDate.getDate(), event.startTime.getHours(), event.startTime.getMinutes());
       event.repeat = []
       for (var i = 0; i < 7; i ++)
         if (event.repeatDay[i])
@@ -132,23 +128,6 @@ angular.module('app.calendar')
         $compile(element)($scope);
     };
 
-    $scope.uiConfig = {
-        aspectRatio: 2,
-        editable: false,
-        header:{
-            left: 'month agendaWeek agendaDay',
-            center: 'title',
-            right: 'today prev,next myButton'
-        },
-        eventClick: $scope.eventOnClick,
-        eventRender: function(event, element, view) {
-            $scope.eventOnRender(event, element, view);
-            if (event.repeat.length == 0)
-                return true;
-            return event.start <= event.endRepeat && event.start >= event.startRepeat;
-        }
-    };
-
     $scope.createEvent = function() {
         if (!userService.loggedIn()) {
             alert('Please log in to create an event!');
@@ -171,6 +150,8 @@ angular.module('app.calendar')
                     console.log('Error creating events', err);
                 } else {
                     console.log('Successful creating event');
+                    $scope.events[$scope.events.length - 1]._id = res.data._id;
+                    // console.log($scope.events);
                 }
             });
         }, function() {
@@ -197,16 +178,18 @@ angular.module('app.calendar')
     };    
 
     $scope.replace = function(events, currentEvent, newEvent){
-        // for (var i = 0; i < $scope.events.length; i ++)
-        //     if ($scope.events[i]._id == currentEvent._id)
-        //         $scope.events.splice(i,1);
-        
-        console.log(newEvent);
-        Object.keys(currentEvent).forEach(function(key) {
-            if (key != '_id') 
-                currentEvent[key] = newEvent[key];
-        });
-        currentEvent.title += ' ';
+        for (var i = 0; i < $scope.events.length; i ++)
+            if ($scope.events[i]._id == currentEvent._id)
+                $scope.events.splice(i,1);
+        newEvent._id = currentEvent._id;
+        newEvent.title += ' ';
+        $scope.events.push(newEvent);
+        // console.log(newEvent);
+        // Object.keys(currentEvent).forEach(function(key) {
+        //     if (key != '_id') 
+        //         currentEvent[key] = newEvent[key];
+        // });
+        // currentEvent.title += ' ';
         
         var cloneEvent = Object.assign({},newEvent);
         cloneEvent._id = currentEvent._id;
@@ -240,4 +223,22 @@ angular.module('app.calendar')
         }, function() {
         });
     };
+
+    $scope.uiConfig = {
+        aspectRatio: 2,
+        editable: false,
+        defaultView: 'agendaWeek',
+        header:{
+            left: 'month agendaWeek agendaDay',
+            center: 'title',
+            right: 'createEvent prev,next'
+        },
+        eventClick: $scope.eventOnClick,
+        eventRender: function(event, element, view) {
+            $scope.eventOnRender(event, element, view);
+            if (event.repeat.length == 0)
+                return true;
+            return event.start <= event.endRepeat && event.start >= event.startRepeat;
+        }
+    };  
   });

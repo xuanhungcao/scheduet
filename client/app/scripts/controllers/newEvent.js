@@ -45,7 +45,7 @@ angular.module('app.calendar')
       return event;
     }
 
-    $scope.colors = ['aqua', 'blue', 'teal', 'green', 'gray', 'yellow', 'orange', 'red', 'purple', 
+    $scope.colors = ['blue', 'green', 'gray', 'yellow', 'orange', 'red', 'purple', 
     'navy'];
     $scope.dow = dayofWeek;
 
@@ -55,7 +55,7 @@ angular.module('app.calendar')
     $scope.endRepeatDatePickerOpened = false;
 
     $scope.repeat = false;
-    $scope.color = colorMap[0];
+    $scope.color = colorMap[$scope.colors[0]];
     $scope.title = "Create an event";
     $scope.confirmButton = "Add";
 
@@ -72,7 +72,7 @@ angular.module('app.calendar')
       // startRepeatDate: new Date(),
       // startRepeatTime: new Date(0),
       endRepeatTime: new Date(0),
-      endRepeatDate: new Date(),
+      endRepeatDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
       isRepeatEvent: false,
       repeatDay: [false,false,false,false,false,false,false]
       // repeat: []
@@ -96,6 +96,7 @@ angular.module('app.calendar')
     }
 
     $scope.cancel = function() {
+      shareData.setModifyingEvent(null);
       $uibModalInstance.dismiss();
     }
 
