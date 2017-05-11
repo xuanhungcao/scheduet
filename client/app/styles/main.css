@@ -31,7 +31,8 @@ body.modal-open[style] {
 }
 
 .wrapper {
-	background-color: #fff !important;
+	background-color: #e9ebee !important;
+    height: 100vh !important;
 }
 .side-bar {
 	padding-top: 10px;
@@ -50,7 +51,8 @@ body.modal-open[style] {
 }
 
 .add-event-button {
-	padding-top: 20px;
+	padding-top: 10px;
+    padding-left: 0px;
 }
 
 .event-detail {
@@ -86,4 +88,22 @@ body.modal-open[style] {
 .checkbox-padding {
     padding-left: 25px;
     padding-top: 0px;
+}
+
+.calendar-ctn {
+    margin-top: 10px;
+}
+
+.inner-ctn {
+    padding-right: 15px;
+}
+
+.box-info-calendar {
+    border: 1px solid #605ca8;
+}
+
+.box-info-calendar > .box-header {
+    background: #605ca8;
+    background-color: #605ca8;
+    color: white;
 }

@@ -64,7 +64,7 @@ angular.module('app.calendar')
       startDate: new Date(),
       endDate: new Date(),
       startTime: new Date(0),
-      endTime: new Date(0),
+      endTime: new Date(2*60*60*1000),
       color: $scope.color,
       startRepeat: new Date(0),
       endRepeat: new Date(0),
