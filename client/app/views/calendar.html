@@ -1,10 +1,31 @@
 <div class="container">
 	<div class="col-md-2 add-event-button">
-		<button type="button" class="btn btn-primary" ng-click="createEvent()">Create an event</button>
+		<button type="button" class="btn btn-primary" ng-click="createEvent()" ng-style="{'background-color': '#605ca8'}">Create an event</button>
 		{{newEvent}}
+		<br></br>
+		<div class="box box-solid box-info-calendar">
+			<div class="box-header with-border">
+			    <h3 class="box-title">Thông báo</h3>
+			    <div class="box-tools pull-right">
+			      <!-- Buttons, labels, and many other things can be placed here! -->
+			      <!-- Here is a label for example -->
+			      
+			    </div><!-- /.box-tools -->
+			</div><!-- /.box-header -->
+			<div class="box-body">
+				<p style="white-space: pre-wrap; word-wrap:break-word;">Thời khóa biểu đã được cập nhật theo thông báo mới của nhà trường <a href="http://www2.uet.vnu.edu.vn/coltech/taxonomy/term/53/5393">http://www2.uet.vnu.edu.vn/coltech/taxonomy/term/53/5393</a>
+			    </p>
+
+			</div><!-- /.box-body -->
+			<div class="box-footer">
+			    <span class="pull-right"><b>20/2/2017</b></span>
+			</div><!-- box-footer -->
+		</div><!-- /.box -->
 	</div>
-	<div class="col-md-10">
-		<div class="info-box">
+
+
+	<div class="col-md-10 calendar-ctn">
+		<div class="info-box inner-ctn">
 		 	<div ui-calendar="uiConfig" ng-model="eventSources">
 		 	</div>
 	 	</div>

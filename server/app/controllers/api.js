@@ -146,7 +146,15 @@ exports.getEvent = function (req, res) {
                 res.status(200).send(data)
             })
         else */
-        Event.find( {$or : [{owner: req.user.username}, {studentId: req.user.studentId}] } , (err, data) => {
+        if (req.user.studentId) {
+            Event.find( {$or : [{owner: req.user.username}, {studentId: req.user.studentId}] } , (err, data) => {
+            if (err) {
+                res.status(204).send('Something wrong')
+                    return
+                }
+                res.status(200).send(data)
+        })
+        } else Event.find({owner: req.user.username}, (err, data) => {
             if (err) {
                 res.status(204).send('Something wrong')
                     return
@@ -192,13 +200,14 @@ exports.postEvent = function (req, res) {
         }
 
         let event = new Event()
+        console.log(typeof(req.body.repeat));
         event.owner = req.user.username
         event.title = req.body.title
         event.description = req.body.description
         event.start = req.body.start
         event.end = req.body.end
         event.allDay = req.body.allDay == 'true' ? true : false
-        event.repeat = req.body.repeat ? req.body.repeat.split(',') : []
+        event.repeat = req.body.repeat 
         event.endRepeat = req.body.endRepeat
         event.color = req.body.color
         event.other = req.body.other
@@ -266,7 +275,7 @@ exports.putEvent = function (req, res) {
             event.start = req.body.start
             event.end = req.body.end
             event.allDay = req.body.allDay == 'true' ? true : false
-            event.repeat = req.body.repeat.split(',')
+            event.repeat = req.body.repeat
             event.endRepeat = req.body.endRepeat
             event.color = req.body.color
             event.other = req.body.other

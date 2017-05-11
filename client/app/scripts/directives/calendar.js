@@ -7,17 +7,17 @@
  * # calendar
  */
 
-angular.module('app.calendar', ['ui.router', 'ui.calendar', 'ui.bootstrap'])
+angular.module('app.calendar', ['ngAnimate', 'ngSanitize', 'ui.router', 'ui.calendar', 'ui.bootstrap'])
 .directive('calendar', function () {
     return {
         templateUrl: 'views/calendar.html',
         restrict: 'E',
         controller: 'CalendarCtrl'
-    }
+    };
 })
 .config(function($stateProvider) {
   	$stateProvider.state('calendar', {
   		url: '/',
   		template: '<calendar></calendar>'
-  	})
+  	});
 });

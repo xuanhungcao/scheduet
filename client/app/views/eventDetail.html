@@ -1,0 +1,20 @@
+<div class="box event-detail" ng-style="{'border-top-color': currentEvent.color}">
+  <div class="box-header">
+    <strong class="box-title">{{currentEvent.title}}</strong>
+  </div>
+    <!-- /.box-body -->
+	<div class="box-body">
+		<span>{{currentEvent.start | date: "h':'mm a"}}</span>
+    <span> - </span>
+    <span>{{currentEvent.end | date: "h':'mm a"}}</span>
+    <br>
+    <span>{{currentEvent.description}}</span>
+	</div>
+	<div class="popover-footer">
+      <div class="button-ctn pull-right">
+        <button type="submit" class="btn btn-default" ng-click="deleteEvent()">Delete</button>  
+        <button type="submit" class="btn btn-info" ng-style="{'background-color': currentEvent.color, 'border-color': currentEvent.color}" ng-click="modifyEvent()">Modify</button>
+      </div>
+	<!-- </div> -->
+  </div>
+</div>
