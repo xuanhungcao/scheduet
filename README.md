@@ -23,4 +23,10 @@ Second, config `app/config/main.js` to `test : 'local'` or `test : 'server'`
 Run
 `node app.js`
 
-## Testcases and auto build scripts will be available soon
+# Contributors
+
+1. Nguyễn Trọng Đông - Backend
+2. Nguyễn Hữu Nhật Minh - Backend
+3. Cao Xuân Hưng - Frontend
+4. Nguyễn Hoàng Hải - Frontend
+5. Phạm Thái Sơn - Frontend
