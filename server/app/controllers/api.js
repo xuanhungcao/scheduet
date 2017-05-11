@@ -146,7 +146,15 @@ exports.getEvent = function (req, res) {
                 res.status(200).send(data)
             })
         else */
-        Event.find( {$or : [{owner: req.user.username}, {studentId: req.user.studentId}] } , (err, data) => {
+        if (req.user.studentId) {
+            Event.find( {$or : [{owner: req.user.username}, {studentId: req.user.studentId}] } , (err, data) => {
+            if (err) {
+                res.status(204).send('Something wrong')
+                    return
+                }
+                res.status(200).send(data)
+        })
+        } else Event.find({owner: req.user.username}, (err, data) => {
             if (err) {
                 res.status(204).send('Something wrong')
                     return
