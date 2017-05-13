@@ -14,15 +14,13 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css" />
-    <link rel="stylesheet" href="styles/footer.css" />
     <!-- endbuild -->
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/AdminLTE.min.css" />
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/_all-skins.min.css"/>
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
     <!-- Ionicons -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Arvo">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Arvo"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"> -->
 
     <link rel="stylesheet" href="app/styles/main.css"/>
     <link rel="icon" href="images/icon.png" />
@@ -67,6 +65,8 @@
     <script src="bower_components/angular-avatar/dist/angular-avatar.min.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- AdminLTE App -->
@@ -88,7 +88,9 @@
     <script src="scripts/directives/calendar.js"></script>
     <script src="scripts/controllers/authentication.js"></script>
     <script src="scripts/controllers/calendar.js"></script>
-    <script src="scripts/controllers/newevent.js"></script>
+    <script src="scripts/controllers/newEvent.js"></script>
+    <script src="scripts/services/event.js"></script>
+    <script src="scripts/services/shareData.js"></script>
     <script src="scripts/controllers/profile.js"></script>
     <!-- endbuild -->
 </body>

@@ -11,22 +11,25 @@
 
 /* 
  Each dependency module represents a component of the app
- A module use a directive with template (view) and controller (controller)
+ A module uses a directive with template (view) and controller (controller)
  */
 
-angular
-	.module('clientApp',
+angular.module('clientApp',
 		['app.navbar',
-			'app.footer',
-			'app.calendar',
-			'angular-jwt',
-			'ui.router',
-			'ui.bootstrap',
-      'ngAvatar'])
+		'app.footer',
+		'app.calendar',
+		'angular-jwt',
+		'ui.router',
+		'ui.bootstrap',
+		'ui.calendar',
+      	'ngAvatar'])
 	.constant('config', {
-		serverUrl: 'http://localhost:3000'
+		// serverUrl: 'http://localhost:3000',
+		// whiteListedDomains: 'localhost',
+		serverUrl: 'http://34.223.248.208:3000',
+		whiteListedDomains: '34.223.248'
 	})
-	.config(function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider, jwtOptionsProvider) {
+	.config(function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider, jwtOptionsProvider, config) {
 		$locationProvider.html5Mode(true);
 		$urlRouterProvider.otherwise('/');
 		jwtOptionsProvider.config({
@@ -34,7 +37,7 @@ angular
 			tokenGetter: function() {
 				return localStorage.getItem('scheduetToken');
 			},
-			whiteListedDomains: ['localhost'],
+			whiteListedDomains: [config.whiteListedDomains],
 			unauthenticatedRedirectPath: '/'
 		});
 

@@ -31,7 +31,8 @@ body.modal-open[style] {
 }
 
 .wrapper {
-	background-color: #fff !important;
+	background-color: #e9ebee !important;
+    height: 100vh !important;
 }
 .side-bar {
 	padding-top: 10px;
@@ -45,10 +46,64 @@ body.modal-open[style] {
 	padding: 20px 20px 20px 20px;
 }
 
-.add-event-button {
-	padding-top: 20px;
+.new-event-form > h1 {
+    margin-bottom: 10px;
 }
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
-    background-color: #605ca8 !important;
+.add-event-button {
+	padding-top: 10px;
+    padding-left: 0px;
+}
+
+.event-detail {
+	margin-bottom: 25px;
+}
+
+.popover-content {
+	padding: 0px;
+}
+
+.popover {
+	width: 300px;
+	border-radius: 0px;
+}
+
+.popover-footer {
+	padding: 10px;
+	margin-bottom: 30px;
+}
+
+.button-ctn {
+	padding-left: 0px;
+}
+
+.box-header {
+    padding-bottom: 0px;
+}
+
+.checkbox-ctn {
+    padding-left: 0px;
+}
+
+.checkbox-padding {
+    padding-left: 25px;
+    padding-top: 0px;
+}
+
+.calendar-ctn {
+    margin-top: 10px;
+}
+
+.inner-ctn {
+    padding-right: 15px;
+}
+
+.box-info-calendar {
+    border: 1px solid #605ca8;
+}
+
+.box-info-calendar > .box-header {
+    background: #605ca8;
+    background-color: #605ca8;
+    color: white;
 }

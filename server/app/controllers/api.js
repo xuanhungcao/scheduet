@@ -265,6 +265,7 @@ exports.postEvent = function (req, res) {
         }
 
         let event = new Event()
+        console.log(typeof(req.body.repeat));
         event.owner = req.user.username
         event.title = req.body.title
         event.description = req.body.description
