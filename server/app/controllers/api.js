@@ -276,6 +276,7 @@ exports.postEvent = function (req, res) {
         event.endRepeat = req.body.endRepeat
         event.color = req.body.color
         event.other = req.body.other
+        event.editable = true
         event.save((err, n) => {
             if (err) {
                 res.status(204).send('Can not create new Event')
