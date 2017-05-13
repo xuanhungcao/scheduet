@@ -4,6 +4,10 @@ const User = require('../models/user')
 const Schedule = require('../models/schedule')
 const Event = require('../models/event')
 const mongoose = require('mongoose')
+const Event2 = require('../models/event2')
+
+const Modules = require('../models/module')
+const _ = require('underscore')
 
 /**
  * @api {GET} /api/users/:username get user
@@ -146,12 +150,81 @@ exports.getEvent = function (req, res) {
                 res.status(200).send(data)
             })
         else */
+
+        const extractTime = function(module) {
+            let day = module['Thứ']
+            let date = ''
+            switch (day) {
+                case 1:
+                    date = '01-Feb-2017 '
+                    break
+                case 2:
+                    date = '02-Feb-2017 '
+                    break
+                case 3:
+                    date = '03-Feb-2017 '
+                    break
+                case 4:
+                    date = '04-Feb-2017 '
+                    break
+                case 5:
+                    date = '05-Feb-2017 '
+                    break
+                case 6:
+                    date = '06-Feb-2017 '
+                    break
+                default:
+                    date = '07-Feb-2017 '
+                    break
+            }
+            let start, end
+            if (Number(module['Tiết'].charAt(0)) < 6)
+                start = Number(module['Tiết'].charAt(0)) + 6
+            else
+                start = Number(module['Tiết'].charAt(0)) + 7
+            if (Number(module['Tiết'].substring(2)) < 6)
+                end = Number(module['Tiết'].substring(2)) + 7
+            else
+                end = Number(module['Tiết'].substring(2)) + 8
+
+            return {
+                begin: Date.parse(date + start.toString() + ':00:00'),
+                end: Date.parse(date + end.toString() + ':00:00'),
+            }
+        }
+
         Event.find( {$or : [{owner: req.user.username}, {studentId: req.user.studentId}] } , (err, data) => {
             if (err) {
-                res.status(204).send('Something wrong')
+                    res.status(204).send('Something wrong')
                     return
                 }
-                res.status(200).send(data)
+                Event2.find({studentId: req.user.studentId}, (err, dat) => {
+                    if (err) {
+                        res.status(204).send('Something wrong')
+                        return
+                    }
+                    if (!dat) return res.status(200).send(data)
+                    _.times(dat[0].modules.length, iter => {
+                        let objectid = dat[0].modules[iter]
+                        Modules.findById(objectid, (err, f) => {
+                            data.push({
+                                owner: req.user.username,
+                                studentId: req.user.studentId,
+                                title: `${f['Học Phần']}`,
+                                description: `${f['Giảng viên']} ${f['Giảng đường']}`,
+                                start: extractTime(f).begin,
+                                end: extractTime(f).end,
+                                allDay: false,
+                                repeat: f['Thứ'],
+                                endRepeat: '1496249999000',
+                                color: '#3c8dbc',
+                                editable: false,
+                            })
+                            if (iter == dat[0].modules.length - 1)
+                                res.status(200).send(data)
+                        })
+                    })
+                })
         })
     })
 }
@@ -198,7 +271,7 @@ exports.postEvent = function (req, res) {
         event.start = req.body.start
         event.end = req.body.end
         event.allDay = req.body.allDay == 'true' ? true : false
-        event.repeat = req.body.repeat ? req.body.repeat.split(',') : []
+        event.repeat = req.body.repeat
         event.endRepeat = req.body.endRepeat
         event.color = req.body.color
         event.other = req.body.other
@@ -260,16 +333,23 @@ exports.putEvent = function (req, res) {
                 res.status(404).send('not found')
                 return
             }
+            if (event.editable == false) {
+                res.status(403).send("Forbidden, cant modify the uneditable events")
+                return
+            }
+
             event.owner = req.user.username
             event.title = req.body.title
             event.description = req.body.description
             event.start = req.body.start
             event.end = req.body.end
             event.allDay = req.body.allDay == 'true' ? true : false
-            event.repeat = req.body.repeat.split(',')
+            event.repeat = req.body.repeat
             event.endRepeat = req.body.endRepeat
             event.color = req.body.color
             event.other = req.body.other
+            event.editable = true
+
             event.save((err, n) => {
                 if (err) {
                     res.status(204).send('Oops, can not update event')

@@ -12,8 +12,9 @@ const noteSchema = mongoose.Schema({
     endRepeat: mongoose.Schema.Types.String,
     other: mongoose.Schema.Types.Mixed,
     color: String,
-    module: mongoose.Schema.Types.Array,
+    modules: mongoose.Schema.Types.Mixed,
     editable: mongoose.Schema.Types.Boolean,
 })
 
-module.exports = mongoose.model('events', noteSchema)
+module.exports = mongoose.model('event2s', noteSchema)
+
