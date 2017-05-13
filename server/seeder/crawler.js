@@ -7,17 +7,14 @@ const mongoose = require('mongoose')
 const Schedule = require('../app/models/schedule')
 
 const Module = require('../app/models/module')
-/*
 let files = ['K58K2.csv', 'K59K2.csv', 'K60K2.csv', 'K61K2.csv', 'K61XHHK2.csv']
 
 
 let cnt = 0
 
-*/
 const configDB       = require('../app/config/database')
 mongoose.connect(configDB.localAddress)
 
-/*
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 
 function parse(mssv) {
