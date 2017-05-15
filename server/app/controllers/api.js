@@ -215,7 +215,7 @@ exports.getEvent = function (req, res) {
                                 start: extractTime(f).begin,
                                 end: extractTime(f).end,
                                 allDay: false,
-                                repeat: f['Thứ'],
+                                repeat: [f['Thứ']],
                                 endRepeat: '1496249999000',
                                 color: '#3c8dbc',
                                 editable: false,
@@ -265,7 +265,7 @@ exports.postEvent = function (req, res) {
         }
 
         let event = new Event()
-        console.log(typeof(req.body.repeat));
+        //console.log(typeof(req.body.repeat));
         event.owner = req.user.username
         event.title = req.body.title
         event.description = req.body.description
