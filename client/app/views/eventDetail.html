@@ -10,7 +10,7 @@
     <br>
     <span>{{currentEvent.description}}</span>
 	</div>
-	<div class="popover-footer">
+	<div class="popover-footer" ng-show="!(currentEvent.editable === false)">
       <div class="button-ctn pull-right">
         <button type="submit" class="btn btn-default" ng-click="deleteEvent()">Delete</button>  
         <button type="submit" class="btn btn-info" ng-style="{'background-color': currentEvent.color, 'border-color': currentEvent.color}" ng-click="modifyEvent()">Modify</button>
