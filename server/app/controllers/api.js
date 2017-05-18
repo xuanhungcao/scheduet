@@ -219,6 +219,7 @@ exports.getEvent = function (req, res) {
                                 endRepeat: '1496249999000',
                                 color: '#3c8dbc',
                                 editable: false,
+                                _id: objectid,
                             })
                             if (iter == dat[0].modules.length - 1)
                                 res.status(200).send(data)
