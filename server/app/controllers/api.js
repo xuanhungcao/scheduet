@@ -204,6 +204,7 @@ exports.getEvent = function (req, res) {
                         return
                     }
                     if (!dat) return res.status(200).send(data)
+                    let cnt = 0
                     _.times(dat[0].modules.length, iter => {
                         let objectid = dat[0].modules[iter]
                         Modules.findById(objectid, (err, f) => {
@@ -221,8 +222,11 @@ exports.getEvent = function (req, res) {
                                 editable: false,
                                 _id: objectid,
                             })
-                            if (iter == dat[0].modules.length - 1)
+                            cnt++
+                            if (cnt == dat[0].modules.length) {
                                 res.status(200).send(data)
+                                return
+                            }
                         })
                     })
                 })
